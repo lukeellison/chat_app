@@ -2,10 +2,14 @@ import { Template } from 'meteor/templating';
 
 import './body.html'; //Load body html
 import '../api/messages.js'; //Load Messages database collection and methods
+import '../api/conversations.js';
 
+import { Conversations } from '../api/conversations.js'
 import { Messages } from '../api/messages.js';
-import './message.js';
+
 import './conversation.js';
+import './message.js';
+
 
 Template.body.helpers({
   messages() { //retrieves all messages in the databases from client (insecure)
@@ -17,9 +21,9 @@ Template.body.helpers({
   },
 
   conversations() {
-    return Convos.find({$or: 
-        [{user1: Meteor.userId()}, 
-        {user2: Meteor.userId()}]});
+    const id = Meteor.userId();
+
+    return Conversations.find({ "users.ids" : id })
   }
 });
 
@@ -36,6 +40,6 @@ Template.body.events({
   textarea.val("");
 },
 "click .btn-matchmake"(event) { //Event listener that calls the matchmake method when you press the matchmake button
-  Meteor.call("matchmake");
+  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos
 }
 });

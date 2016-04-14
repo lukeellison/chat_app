@@ -1,6 +1,10 @@
 <template name="conversation">
-	<li class="list-group-item">
-		<span class="name"><strong>{{name}}</strong></span>
-		<span class="badge">{{num_unread}}</span>
+	<li class="active">
+		<a href="#">
+			<span class="name"><strong>{{convoName name users.usernames}}</strong></span>
+			<span class="badge">{{num_unread}}</span>
+			<span class="sr-only">(current)</span>
+		</a>
 	</li>
+
 </template>
