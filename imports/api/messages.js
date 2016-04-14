@@ -4,13 +4,14 @@ import { check } from 'meteor/check';
 //Create Mongo collection for the messages
 export const Messages = new Mongo.Collection("messages");
 /*Current structure:
+conversationId: id of conversation this message belongs to
 text: message content
 sentAt: date object when sent
-senderID: userID of sender
+senderId: userId of sender
 senderUsername: username of sender
 */
 Meteor.methods({
-  'messages.send'(text) { //Method called when pressing the send button on a message
+  'messages.send'(convo, text) { //Method called when pressing the send button on a message
   	check(text, String); //Check if input is a string
 
     //Make sure the user is logged in before sending
@@ -18,12 +19,13 @@ Meteor.methods({
       alert("Please sign in to send a message");
       throw new Meteor.Error("not-authorized");
     }
- 
+    
     //Insert into database
     Messages.insert({
+      conversationId: convo,
       text: text,
       sentAt: new Date(),
-      senderID: Meteor.userId(),
+      senderId: Meteor.userId(),
       senderUsername: Meteor.user().username
     });
   },

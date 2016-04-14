@@ -1,7 +1,9 @@
 import './conversation.html'
 
 Template.conversation.helpers({
-convoName(name, users) {
+convoName() {
+  const name = this.name;
+  let users = this.users.usernames;
   //return string for conversation name
   if(name == ""){ //If no name
     users.splice(users.indexOf(Meteor.user().username), 1); //Remove user from array
@@ -16,5 +18,15 @@ convoName(name, users) {
   	return newName
   }
   else return name; //Otherwise just return the chosen name
+},
+active(){
+  return this._id === Session.get('activeConvo');
 }
+
+});
+
+Template.body.events({
+  'click .conversation'(event) {
+    Session.set('activeConvo', this._id);
+  },
 });

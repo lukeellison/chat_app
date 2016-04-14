@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
 
 import './body.html'; //Load body html
 import '../api/messages.js'; //Load Messages database collection and methods
@@ -10,14 +11,18 @@ import { Messages } from '../api/messages.js';
 import './conversation.js';
 import './message.js';
 
+Template.body.onCreated(function bodyOnCreated() {
+  this.state = new ReactiveDict();
+});
 
 Template.body.helpers({
   messages() { //retrieves all messages in the databases from client (insecure)
 
-    return Messages.find({}, {sort: {sentAt : 1}});
-  //   return [{senderUsername : "luke", text: "hello"},
-  //             {senderUsername : "someone else", text: "yo"},
-  //             {senderUsername : "luke", text: "AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage AreallyLongMessage "}]
+    const convo = Session.get('activeConvo');
+    alert(convo)
+
+    return Messages.find({conversationId: convo}, {sort: {sentAt : 1}});
+
   },
 
   conversations() {
@@ -31,10 +36,11 @@ Template.body.events({
 "click .message-send"(event) { //Event listener that calls the messages.send method when you press the send button
   var textarea = $('.main-input textarea');
 
-  var text = textarea.val();
+  const convo = Session.get('activeConvo');
+  const text = textarea.val();
 
   // Insert message into the collection
-  Meteor.call("messages.send", text)
+  Meteor.call("messages.send", convo, text)
 
   // Clear form
   textarea.val("");
