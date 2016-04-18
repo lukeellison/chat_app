@@ -1,5 +1,4 @@
 import { Template } from 'meteor/templating';
-import { ReactiveDict } from 'meteor/reactive-dict';
 
 import './body.html'; //Load body html
 import '../api/messages.js'; //Load Messages database collection and methods
@@ -11,21 +10,16 @@ import { Messages } from '../api/messages.js';
 import './conversation.js';
 import './message.js';
 
-Template.body.onCreated(function bodyOnCreated() {
-  this.state = new ReactiveDict();
-});
-
 Template.body.helpers({
-  messages() { //retrieves all messages in the databases from client (insecure)
+  messages() { //retrieves active conversations messages in the databases from client (insecure)
 
-    const convo = Session.get('activeConvo');
-    alert(convo)
+    const convo = Session.get('activeConvo'); //Get the active conversation from the session variable
 
-    return Messages.find({conversationId: convo}, {sort: {sentAt : 1}});
+    return Messages.find({conversationId: convo}, {sort: {sentAt : 1}}); //Return the messages for the active conversation
 
   },
 
-  conversations() {
+  conversations() { //retrives conversations that this user is in
     const id = Meteor.userId();
 
     return Conversations.find({ "users.ids" : id })
@@ -34,10 +28,10 @@ Template.body.helpers({
 
 Template.body.events({
 "click .message-send"(event) { //Event listener that calls the messages.send method when you press the send button
-  var textarea = $('.main-input textarea');
+  var textarea = $('.main-input textarea'); //Find the main text area
+  const text = textarea.val(); //get the text from the text area
 
-  const convo = Session.get('activeConvo');
-  const text = textarea.val();
+  const convo = Session.get('activeConvo'); //Get the active conversation to post it to
 
   // Insert message into the collection
   Meteor.call("messages.send", convo, text)
