@@ -58,22 +58,26 @@ Meteor.methods({
 
     matchedUsers = Conversations.find({},{"users.ids" : 1}).map(function(item){ item.users.ids.shift(); return item.users.ids; })
     matchedUsers.push(Meteor.userId())
+    console.error(matchedUsers)
 
-    const rand =  Math.floor(Math.random() * matchedUsers.length); 
-    console.error(rand)    
-    const randUser = Meteor.users.find({ $nin: matchedUsers }, {skip: rand, limit: -1})
+    length_unmactchedUsers = Meteor.users.find().count() - matchedUsers.length
+    console.error(length_unmactchedUsers)
+
+    const rand =  Math.floor(Math.random() * length_unmactchedUsers); 
+    console.error(rand)
+    const randUser = Meteor.users.findOne({ "_id": { $nin: matchedUsers }}, {skip: rand})
   
-    console.error(randUser._id)    
+    console.error(randUser._id)
 
     //Insert into database
-    // Conversations.insert({
-    //   users: {
-    //     ids: [Meteor.userId(), userId],
-    //     usernames: [Meteor.user().username, username]
-    //   },
-    //   languages: "eng",
-    //   lastMessage: new Date(),
-    //   name: ""
-    // });
+    Conversations.insert({
+      users: {
+        ids: [Meteor.userId(), randUser._id],
+        usernames: [Meteor.user().username, randUser.username]
+      },
+      languages: "eng",
+      lastMessage: new Date(),
+      name: ""
+    });
   },
 });
