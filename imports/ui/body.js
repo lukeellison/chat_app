@@ -10,6 +10,11 @@ import { Messages } from '../api/messages.js';
 import './conversation.js';
 import './message.js';
 
+Template.body.onCreated(function bodyOnCreated() {
+  Meteor.subscribe('convos');
+  Meteor.subscribe('messages')
+});
+
 Template.body.helpers({
   messages() { //retrieves active conversations messages in the databases from client (insecure)
 
@@ -40,6 +45,8 @@ Template.body.events({
   textarea.val("");
 },
 "click .btn-matchmake"(event) { //Event listener that calls the matchmake method when you press the matchmake button
-  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos
+
+
+//  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos
 }
 });

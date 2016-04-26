@@ -13,6 +13,20 @@ languages: [agreed conversation languages]
 lastMessage: Date object of most recent messsage
 name: name of conversation
 */
+
+if (Meteor.isServer) {
+  // This code only runs on the server
+  // Only publish convos that belong to the current user
+
+  Meteor.publish('convos', function convosPublication() {
+    if (!this.userId) {
+      return this.ready();
+    }
+
+    return Conversations.find({ "users.ids" : this.userId });
+  });
+} 
+
 Meteor.methods({
   'conversations.new'(userId, username) { //Method called when pressing the send button on a message
   	check(userId, String);
