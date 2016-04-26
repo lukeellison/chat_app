@@ -46,6 +46,7 @@ Template.body.events({
 },
 "click .btn-matchmake"(event) { //Event listener that calls the matchmake method when you press the matchmake button
 
+  Meteor.call('conversations.matchmake');
 
 //  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos
 }

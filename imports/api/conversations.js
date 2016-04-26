@@ -28,7 +28,7 @@ if (Meteor.isServer) {
 } 
 
 Meteor.methods({
-  'conversations.new'(userId, username) { //Method called when pressing the send button on a message
+  'conversations.new'(userId, username) { //Method is being used temporarily
   	check(userId, String);
   	//check(username, String);
 
@@ -48,5 +48,32 @@ Meteor.methods({
       lastMessage: new Date(),
       name: ""
     });
+  },
+  'conversations.matchmake'() { //Method called when pressing the send button on a message
+    //Make sure the user is logged in before matchmaking
+    if (! Meteor.userId()) {
+      alert("Please sign in");
+      throw new Meteor.Error("not-authorized");
+    }
+
+    matchedUsers = Conversations.find({},{"users.ids" : 1}).map(function(item){ item.users.ids.shift(); return item.users.ids; })
+    matchedUsers.push(Meteor.userId())
+
+    const rand =  Math.floor(Math.random() * matchedUsers.length); 
+    console.error(rand)    
+    const randUser = Meteor.users.find({ $nin: matchedUsers }, {skip: rand, limit: -1})
+  
+    console.error(randUser._id)    
+
+    //Insert into database
+    // Conversations.insert({
+    //   users: {
+    //     ids: [Meteor.userId(), userId],
+    //     usernames: [Meteor.user().username, username]
+    //   },
+    //   languages: "eng",
+    //   lastMessage: new Date(),
+    //   name: ""
+    // });
   },
 });
