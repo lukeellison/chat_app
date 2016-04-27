@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 
 import './body.html'; //Load body html
+import '../../client/main.css';
 import '../api/messages.js'; //Load Messages database collection and methods
 import '../api/conversations.js';
 

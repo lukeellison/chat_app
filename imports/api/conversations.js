@@ -49,26 +49,28 @@ Meteor.methods({
       name: ""
     });
   },
-  'conversations.matchmake'() { //Method called when pressing the send button on a message
+  'conversations.matchmake'() { //Method called when pressing the matchmake button
     //Make sure the user is logged in before matchmaking
     if (! Meteor.userId()) {
       alert("Please sign in");
       throw new Meteor.Error("not-authorized");
     }
 
+    //find all the users already in a conversation with this user
     matchedUsers = Conversations.find({},{"users.ids" : 1}).map(function(item){ item.users.ids.shift(); return item.users.ids; })
-    matchedUsers.push(Meteor.userId())
-    console.error(matchedUsers)
+    matchedUsers.push(Meteor.userId()) //add themselves to the list
 
+    //find how many users are left unmatched
     length_unmactchedUsers = Meteor.users.find().count() - matchedUsers.length
-    console.error(length_unmactchedUsers)
-
+    if(length_unmactchedUsers < 1){
+      alert("No remaining users left unmatched")
+      throw new Meteor.Error("not-authorized");
+    }
+    //Generate a random int for which user to pick out of all of the unmatched users
     const rand =  Math.floor(Math.random() * length_unmactchedUsers); 
-    console.error(rand)
+    //Find the user using the random number from all users not including any that have already been matched
     const randUser = Meteor.users.findOne({ "_id": { $nin: matchedUsers }}, {skip: rand})
   
-    console.error(randUser._id)
-
     //Insert into database
     Conversations.insert({
       users: {
