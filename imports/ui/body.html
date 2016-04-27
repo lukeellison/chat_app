@@ -42,16 +42,14 @@
       		<button type="button" class="btn btn-danger btn-matchmake">Matchmake!</button>
   	    </div>
     </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    	<div class="above-bottom-bar">
-	    	<ul class="list-group message-list">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main-window">
+    	<div class="chat-window">
+	    	<ul class="list-group chat-messages">
 	    		{{#each messages}}
 	    			{{> message}}
 	    		{{/each}}
 	    	</ul>
-	    </div>
-	    <div class="bottom-bar">
-			<div class="input-group main-input">
+			<div class="input-group chat-input">
 			    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
 			    <span class="input-group-addon btn btn-primary message-send">Send</span>
 			</div>
