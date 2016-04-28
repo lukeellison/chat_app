@@ -109,8 +109,35 @@
   max-width: 60%;
 }
 
+/*
+ * Messages
+ */
+
+.message
+{
+  list-style: none;
+  list-style-position: outside;
+  padding: 10px;
+  box-shadow: 2px 2px 3px #888888;
+  margin-bottom: 15px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
 .message-text {
   white-space: pre;
+}
+
+.message-sent {
+  color: #DDD;
+  background-color: #444;
+  margin-left: 30%;
+}
+
+.message-received {
+  background-color: #EEE;
+  margin-right: 30%;
 }
 
 li time {
