@@ -36,7 +36,6 @@ Template.body.events({
 "click .message-send"(event) { //Event listener that calls the messages.send method when you press the send button
   var textarea = $('.chat-input textarea'); //Find the main text area
   const text = textarea.val(); //get the text from the text area
-  console.log(text)
   const convo = Session.get('activeConvo'); //Get the active conversation to post it to
 
   // Insert message into the collection
