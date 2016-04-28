@@ -1,7 +1,7 @@
 <template name="message">
 	<li class="clearfix message {{#if thisUser}}message-sent{{else}}message-received{{/if}}">
 		<i class="fa fa-pencil-square-o"></i>
-		<span class="message-text"><strong>{{senderUsername}}: </strong>{{text}}</span>
+		<span class="message-text"><strong>{{senderUsername}}:</strong> {{text}}</span>
 		<time>{{time _id}}</time>
 	</li>
 </template>

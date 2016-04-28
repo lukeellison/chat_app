@@ -89,14 +89,14 @@
   display:flex;
   flex-direction:column;
   height:100vh;
-  padding-right: 15px;
+  padding-top: 70px;
 }
 
 .chat-messages{
-  padding-top: 70px;
   flex: 1;
   height:100%;
   overflow: auto;
+  padding-right: 15px;
 }
 
 .chat-input{

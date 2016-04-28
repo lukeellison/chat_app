@@ -10,6 +10,7 @@ import { Messages } from '../api/messages.js';
 
 import './conversation.js';
 import './message.js';
+import './helpers.js';
 
 Template.body.onCreated(function bodyOnCreated() {
   Meteor.subscribe('convos');
@@ -55,5 +56,30 @@ Template.body.events({
   Meteor.call('conversations.matchmake');
 
 //  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos
+},
+"click .message-translate"(event) {
+  var textarea = $('.chat-input textarea');
+  const sourceText = textarea.val();
+  const sourceLang = 'en'
+  const targetLang = 'ja'
+  var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
+            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", url, false ); // false for synchronous request
+  xmlHttp.send( null );
+
+  var result = xmlHttp.responseText;
+  while(result.indexOf(',,') !== -1){
+    result = result.replace(new RegExp(',,', 'g'),',null,');
+  }
+  console.log(result);
+  var translatedText = JSON.parse(result)[0][0][0];
+  console.log(translatedText);
+  textarea.val(translatedText);
+},
+"mouseup"(event) {
+  // console.log(window.getSelection().toString())
+  // console.log(getSelectionBoundaryElement(false))
 }
 });
