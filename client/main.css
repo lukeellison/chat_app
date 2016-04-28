@@ -85,9 +85,6 @@
  * Chat window
  */
 
-.main-window{
-}
-
 .chat-window{
   display:flex;
   flex-direction:column;
@@ -110,6 +107,10 @@
   width: 60%; 
   min-height: 40px; 
   max-width: 60%;
+}
+
+.message-text {
+  white-space: pre;
 }
 
 li time {
