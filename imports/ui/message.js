@@ -10,4 +10,7 @@ time(id) {
 thisUser() {
 	return this.senderId === Meteor.userId()
 },
+active() {
+	return this._id === Session.get("activeMessage")
+},
 });

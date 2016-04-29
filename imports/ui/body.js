@@ -73,13 +73,32 @@ Template.body.events({
   while(result.indexOf(',,') !== -1){
     result = result.replace(new RegExp(',,', 'g'),',null,');
   }
-  console.log(result);
   var translatedText = JSON.parse(result)[0][0][0];
-  console.log(translatedText);
   textarea.val(translatedText);
 },
-"mouseup"(event) {
-  // console.log(window.getSelection().toString())
-  // console.log(getSelectionBoundaryElement(false))
+"mousedown .message"(event) {
+  Session.set("clickedMessage", this._id);
+},
+"mouseup .message"(event) {
+  Session.set("activeMessage",this._id);
+  const clickedMessage = Session.get("clickedMessage");
+  if(clickedMessage === this._id){
+    var text = "";
+    if (window.getSelection) {
+        text = window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") {
+        text = document.selection.createRange().text;
+    }
+    if(text !== ""){
+      console.log(window.getSelection().toString())
+    }
+  }
+  Session.set('clickedMessage',0)
+},
+"click"(event) {
+  const target = event.target; 
+  if(!($(event.target).parent(".message").length>0 || $(event.target).is(".message"))) {
+    Session.set("activeMessage",0)
+  }
 }
 });

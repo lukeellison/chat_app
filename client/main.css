@@ -126,7 +126,19 @@
   border-radius: 10px;
 }
 
+.message.active{
+  border: 2px solid yellow;
+}
+
+.message-title {
+  display: block;
+  width: 100%;
+  border-bottom: 1px solid #999
+}
+
 .message-text {
+  display: block;
+  margin-top: 5px;
   white-space: pre-wrap;
 }
 
@@ -142,7 +154,7 @@
 }
 
 li time {
-	float: right;
+  float: right;
 	font-style: italic;
 	color: rgba(0,0,0,.7);
 }

@@ -6,6 +6,7 @@ import { Conversations } from './conversations.js'
 //Create Mongo collection for the messages
 export const Messages = new Mongo.Collection("messages");
 /*Current structure:
+_id: ObjectId
 conversationId: id of conversation this message belongs to
 text: message content
 sentAt: date object when sent
