@@ -16,8 +16,8 @@ Template.body.onCreated(function bodyOnCreated() {
 Template.body.events({
 "click"(event) {
   const target = event.target; 
-  if(!($(event.target).parent(".message").length>0 || $(event.target).is(".message"))) {
-    Session.set("activeMessage",0)
+  if(!($(target).parent(".message").length>0 || $(target).is(".message") || $(target).parent(".chat-input").length>0)) {
+    Session.set("activeMessage",undefined)
   }
 }
 });

@@ -1,6 +1,7 @@
 import './chatWindow.html'
 import { Messages } from '../api/messages.js'
 import './message.js';
+import './editing.html'
 
 Template.chatWindow.helpers({
   messages() { //retrieves active conversations messages in the databases from client (insecure)
@@ -10,6 +11,9 @@ Template.chatWindow.helpers({
     return Messages.find({conversationId: convo}, {sort: {sentAt : 1}}); //Return the messages for the active conversation
 
   },
+  messageActive(){ //Checks to see if a message is currently selected
+    return Session.get("activeMessage") != undefined
+  }
 });
 
 Template.chatWindow.events({
@@ -31,23 +35,10 @@ Template.chatWindow.events({
   }
 },
 "click .message-translate"(event) {
-  var textarea = $('.chat-input textarea');
-  const sourceText = textarea.val();
-  const sourceLang = 'en'
-  const targetLang = 'ja'
-  var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
-            + sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
-
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open( "GET", url, false ); // false for synchronous request
-  xmlHttp.send( null );
-
-  var result = xmlHttp.responseText;
-  while(result.indexOf(',,') !== -1){
-    result = result.replace(new RegExp(',,', 'g'),',null,');
-  }
-  var translatedText = JSON.parse(result)[0][0][0];
-  textarea.val(translatedText);
+  const textarea = $('.chat-input textarea');
+  translate(textarea.val(), "en", "ja",function(translatedText){
+    textarea.val(translatedText);
+  });
 },
 "mousedown .message"(event) {
   Session.set("clickedMessage", this._id);
@@ -69,3 +60,30 @@ Template.chatWindow.events({
   Session.set('clickedMessage',0)
 },
 });
+
+function translate(sourceText,sourceLang,targetLang,callback){
+	const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
+ 				+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+          var result = xmlHttp.responseText;
+          while(result.indexOf(',,') !== -1){
+            result = result.replace(new RegExp(',,', 'g'),',null,');
+          }
+          callback(JSON.parse(result)[0][0][0]);
+        }
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+  // var xmlHttp = new XMLHttpRequest();
+  // xmlHttp.open( "GET", url, false ); // false for synchronous request
+  // xmlHttp.send( null );
+
+  // var result = xmlHttp.responseText;
+  // while(result.indexOf(',,') !== -1){
+  //   result = result.replace(new RegExp(',,', 'g'),',null,');
+  // }
+  // return JSON.parse(result)[0][0][0];
+}

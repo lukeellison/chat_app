@@ -6,9 +6,13 @@
     		{{/each}}
     	</ul>
 		<div class="input-group chat-input">
-		    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
-		    <span class="input-group-addon btn btn-primary message-send">Send</span>
-		    <span class="input-group-addon btn btn-primary message-translate">Translate</span>
+			{{#if messageActive}}
+				{{> editing}}
+		    {{else}}
+			    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
+			    <span class="input-group-addon btn btn-primary message-send">Send</span>
+			    <span class="input-group-addon btn btn-primary message-translate">Translate</span>
+		   	{{/if}}
 		</div>
 	</div>
 </template>
