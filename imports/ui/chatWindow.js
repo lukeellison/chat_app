@@ -3,6 +3,7 @@ import { Messages } from '../api/messages.js'
 import './message.js';
 import './editing.js'
 import { translate } from './helpers.js'
+import { getSelected } from './helpers.js'
 
 Template.chatWindow.helpers({
   messages() { //retrieves active conversations messages in the databases from client (insecure)
@@ -48,13 +49,7 @@ Template.chatWindow.events({
   Session.set("activeMessage",this._id); //set this message as active
   const clickedMessage = Session.get("clickedMessage");
   if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
-    var text = "";
-    //check if any text is highlighted and grab it
-    if (window.getSelection) {
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
-    }
+    const text = getSelected();
     if(text !== "") //if there was nothing highlighted
       Session.set('selectedText',text.substr(0,100)); //just use the whole message (100 char limit)
     else

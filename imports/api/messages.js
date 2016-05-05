@@ -50,4 +50,13 @@ Meteor.methods({
       senderUsername: Meteor.user().username
     });
   },
+  'messages.correct'(id,text) {
+    //Make sure the user is logged in before updating
+    if (! Meteor.userId()) {
+      alert("Please sign in to send a message");
+      throw new Meteor.Error("not-authorized");
+    }
+
+    Messages.update(id,{ $set: {"text" : text} })
+  }
 });

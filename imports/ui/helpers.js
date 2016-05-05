@@ -15,3 +15,13 @@ export const translate = function(sourceText,sourceLang,targetLang,callback){
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
 }
+
+export const getSelected = function(){ //check if any text is highlighted and grab it
+  var text = "";
+  if (window.getSelection) {
+      text = window.getSelection().toString();
+  } else if (document.selection && document.selection.type != "Control") {
+      text = document.selection.createRange().text;
+  }
+  return text;
+}

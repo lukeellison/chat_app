@@ -200,7 +200,7 @@
 .message-text {
   display: block;
   margin-top: 5px;
-  white-space: pre-wrap;
+  white-space: normal;
   overflow: hidden;
 }
 
@@ -215,8 +215,20 @@
   margin-right: 30%;
 }
 
+.corrected {
+  color: red !important;
+}
+
 li time {
   float: right;
 	font-style: italic;
 	color: rgba(0,0,0,.7);
+}
+
+/*
+ * Corrections
+ */
+
+.corrected {
+  color: red;
 }
