@@ -1,7 +1,8 @@
 import './chatWindow.html'
 import { Messages } from '../api/messages.js'
 import './message.js';
-import './editing.html'
+import './editing.js'
+import { translate } from './helpers.js'
 
 Template.chatWindow.helpers({
   messages() { //retrieves active conversations messages in the databases from client (insecure)
@@ -28,62 +29,37 @@ Template.chatWindow.events({
   // Clear form
   textarea.val("");
 },
-"keypress .chat-input textarea"(event) {
-  if(event.which == 13 && !event.shiftKey){
+"keypress .chat-input textarea"(event) { //enter key sends message
+  if(event.which == 13 && !event.shiftKey){ //unless shift+enter
     event.preventDefault();
     $(".message-send").click();
   }
 },
-"click .message-translate"(event) {
+"click .message-translate"(event) { //temporarily translates text in the textarea and replaces it in the input
   const textarea = $('.chat-input textarea');
-  translate(textarea.val(), "en", "ja",function(translatedText){
+  translate(textarea.val(), "en", "ja",function(translatedText){ //hardcoded english to japanese at the moment
     textarea.val(translatedText);
   });
 },
-"mousedown .message"(event) {
+"mousedown .message"(event) { //Checks which message the mouse button was pressed on for highlighting
   Session.set("clickedMessage", this._id);
-},
-"mouseup .message"(event) {
-  Session.set("activeMessage",this._id);
+}, 
+"mouseup .message"(event) { //event for clicking on messages and sets the selectedText session variable limited to 100 charactars
+  Session.set("activeMessage",this._id); //set this message as active
   const clickedMessage = Session.get("clickedMessage");
-  if(clickedMessage === this._id){
+  if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
     var text = "";
+    //check if any text is highlighted and grab it
     if (window.getSelection) {
         text = window.getSelection().toString();
     } else if (document.selection && document.selection.type != "Control") {
         text = document.selection.createRange().text;
     }
-    if(text !== ""){
-      console.log(window.getSelection().toString())
-    }
+    if(text !== "") //if there was nothing highlighted
+      Session.set('selectedText',text.substr(0,100)); //just use the whole message (100 char limit)
+    else
+      Session.set('selectedText',this.text.substr(0,100)); //otherwise use the highlighted text (100 char limit)
   }
-  Session.set('clickedMessage',0)
+  Session.set('clickedMessage',undefined) //if the mouse came back up elsewhere then cancel the mousedown event
 },
 });
-
-function translate(sourceText,sourceLang,targetLang,callback){
-	const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
- 				+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
-
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-          var result = xmlHttp.responseText;
-          while(result.indexOf(',,') !== -1){
-            result = result.replace(new RegExp(',,', 'g'),',null,');
-          }
-          callback(JSON.parse(result)[0][0][0]);
-        }
-    }
-    xmlHttp.open("GET", url, true); // true for asynchronous 
-    xmlHttp.send(null);
-  // var xmlHttp = new XMLHttpRequest();
-  // xmlHttp.open( "GET", url, false ); // false for synchronous request
-  // xmlHttp.send( null );
-
-  // var result = xmlHttp.responseText;
-  // while(result.indexOf(',,') !== -1){
-  //   result = result.replace(new RegExp(',,', 'g'),',null,');
-  // }
-  // return JSON.parse(result)[0][0][0];
-}

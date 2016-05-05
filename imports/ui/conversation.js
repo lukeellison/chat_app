@@ -29,5 +29,7 @@ active(){ //Checks if this conversation is active
 Template.body.events({
   'click .conversation'(event) { //Clicking a conversation sets it as active
     Session.set('activeConvo', this._id);
+    //Also deactive selected message from previous conversation
+    Session.set("activeMessage",undefined)
   },
 });

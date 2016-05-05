@@ -14,9 +14,9 @@ Template.body.onCreated(function bodyOnCreated() {
 });
 
 Template.body.events({
-"click"(event) {
+"click"(event) { //Allows clicking off selected message
   const target = event.target; 
-  if(!($(target).parent(".message").length>0 || $(target).is(".message") || $(target).parent(".chat-input").length>0)) {
+  if($(target).is(".chat-messages")){
     Session.set("activeMessage",undefined)
   }
 }
