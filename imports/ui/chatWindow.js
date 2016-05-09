@@ -50,10 +50,15 @@ Template.chatWindow.events({
   const clickedMessage = Session.get("clickedMessage");
   if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
     const text = getSelected();
-    if(text !== "") //if there was nothing highlighted
-      Session.set('selectedText',text.substr(0,100)); //just use the whole message (100 char limit)
-    else
-      Session.set('selectedText',this.text.substr(0,100)); //otherwise use the highlighted text (100 char limit)
+    if(text !== "") //if there was not nothing highlighted
+      Session.set('selectedText',text.substr(0,100)); //Use the highlighted text (100 char limit)
+    else{
+      //otherwise use the whole message (100 char limit) after removing html tags
+      var out = this.text.replace(/<(?:.|\n)*?>/gm, '');
+      out = out.substr(0,100);
+      Session.set('selectedText',out);
+    }
+       
   }
   Session.set('clickedMessage',undefined) //if the mouse came back up elsewhere then cancel the mousedown event
 },

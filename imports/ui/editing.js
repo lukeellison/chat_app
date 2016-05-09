@@ -20,7 +20,26 @@ Template.editing.events({
 	const activeMessage = Session.get('activeMessage');
 	const text = Messages.findOne({"_id" : activeMessage},{"text" : 1}).text;
 	const i = text.indexOf(selectedText)
-	const output = text.substr(0,i) + '<span class="corrected">' + text.substr(i,selectedText.length) + '</span>' + text.substr(i+selectedText.length);
-	Meteor.call("messages.correct",activeMessage,output)
+	if(i<0){
+		alert('Do not overlap corrections')
+		return;
+	}
+
+	const edit = $('.chat-input textarea').val()
+	console.log(edit)
+	if(edit === ""){
+		alert("please enter a correction")
+		return
+	}
+
+	Meteor.call("edits.new", "correction", activeMessage, Session.get('activeConvo'), edit, function(error,newId){
+		if(error){
+			console.log(error);
+			return;
+		}
+		console.log(newId);
+		const output = text.substr(0,i) + '<span class="corrected" id="'+newId+'">' + text.substr(i,selectedText.length) + '</span>' + text.substr(i+selectedText.length);
+		Meteor.call("messages.correct",activeMessage,output)		
+	});
 },
 });

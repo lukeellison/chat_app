@@ -4,13 +4,15 @@ import './body.html'; //Load body html
 import '../../client/main.css';
 import '../api/messages.js'; //Load Messages database collection and methods
 import '../api/conversations.js';
+import '../api/edits.js'
 
 import './sidebar.js'
 import './chatWindow.js';
 
 Template.body.onCreated(function bodyOnCreated() {
   Meteor.subscribe('convos');
-  Meteor.subscribe('messages')
+  Meteor.subscribe('messages');
+  Meteor.subscribe('edits');
 });
 
 Template.body.events({

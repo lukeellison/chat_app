@@ -5,5 +5,16 @@
 			<time>{{time _id}}</time>			
 		</span>
 		<span class="message-text dont-break-out">{{{text}}}</span>
+		{{#if active}}
+			<span class="edit-additions">
+				<span class="edit-title"><strong>{{editType}}</strong> - {{edit}}</span>
+				{{#each additions}}
+					<p><strong>{{sender}}:</strong>{{addition}}</p>
+				{{/each}}
+				<form class="additionForm">
+			        <input type="text" name="text" placeholder="Add to {{editType}}" />
+				</form>
+			</span>
+		{{/if}}
 	</li>
 </template>
