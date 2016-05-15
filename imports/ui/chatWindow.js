@@ -15,7 +15,15 @@ Template.chatWindow.helpers({
   },
   messageActive(){ //Checks to see if a message is currently selected
     return Session.get("activeMessage") != undefined
-  }
+  },
+  inputTitle(){
+    if(Session.get("activeMessage")){
+      if(Session.get('activeEdit')){
+        return "Modifying selected edit to:"        
+      }
+      else return "New edit of selected part of message:"
+    }
+  },
 });
 
 Template.chatWindow.events({
@@ -43,7 +51,11 @@ Template.chatWindow.events({
   });
 },
 "mousedown .message"(event) { //Checks which message the mouse button was pressed on for highlighting
-  Session.set("clickedMessage", this._id);
+  const target = event.target; 
+  if($(target).is(".message-text")){
+    Session.set("clickedMessage", this._id);
+  }
+
 }, 
 "mouseup .message"(event) { //event for clicking on messages and sets the selectedText session variable limited to 100 charactars
   Session.set("activeMessage",this._id); //set this message as active

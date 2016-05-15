@@ -119,7 +119,7 @@
 
 .chat-input{
   border-top: 1px solid #999;
-  padding: 20px 5px;
+  padding: 2px 5px 20px 5px;
 }
 
 .chat-input-text { 
@@ -133,7 +133,7 @@
  * Editing
  */
 
-.chat-input>.left-addon.edit {
+.chat-input>.input-group>.left-addon.edit {
   padding: 0px;
   height: 82px;
   min-width: 50%;
@@ -229,10 +229,20 @@ li time {
  * Corrections
  */
 
-.corrected {
+.correction {
   color: red;
 }
 
 .edit-additions {
+  display: none;
   border-top: 1px solid #999;
+}
+
+.edit-additions>button{
+  float: right;
+  font-weight: bold;
+  background: none;
+  font-size: 1.2em;
+  border: none;
+  position: relative;  
 }

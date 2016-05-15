@@ -57,14 +57,14 @@ Meteor.methods({
     }
 
     //find all the users already in a conversation with this user
-    matchedUsers = Conversations.find({},{"users.ids" : 1}).map(function(item){ item.users.ids.shift(); return item.users.ids; })
+    matchedUsers = Conversations.find({"users.ids": Meteor.userId()},{"users.ids" : 1}).map(function(item){ item.users.ids.shift(); return item.users.ids; })
     matchedUsers.push(Meteor.userId()) //add themselves to the list
 
     //find how many users are left unmatched
     length_unmactchedUsers = Meteor.users.find().count() - matchedUsers.length
+
     if(length_unmactchedUsers < 1){
-      alert("No remaining users left unmatched")
-      throw new Meteor.Error("not-authorized");
+      return false
     }
     //Generate a random int for which user to pick out of all of the unmatched users
     const rand =  Math.floor(Math.random() * length_unmactchedUsers); 
@@ -81,5 +81,6 @@ Meteor.methods({
       lastMessage: new Date(),
       name: ""
     });
+    return true;
   },
 });

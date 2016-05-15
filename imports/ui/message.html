@@ -8,10 +8,13 @@
 		{{#if active}}
 			<span class="edit-additions">
 				<span class="edit-title"><strong>{{editType}}</strong> - {{edit}}</span>
+				<button type="button" class="hide-pane" aria-label="Hide pane" title="Hide pane"><span class="glyphicon glyphicon-chevron-up"></span></button>
+				<button type="button" class="delete-edit" aria-label="Delete {{editType}}" title="Delete {{editType}}"><span class="glyphicon glyphicon-remove"></span></button>
 				{{#each additions}}
-					<p><strong>{{sender}}:</strong>{{addition}}</p>
+					<p><strong>{{sender}}:</strong> {{addition}}</p>
 				{{/each}}
 				<form class="additionForm">
+					Add to this:
 			        <input type="text" name="text" placeholder="Add to {{editType}}" />
 				</form>
 			</span>

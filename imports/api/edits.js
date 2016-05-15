@@ -2,6 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 import { Conversations } from './conversations.js'
+import { Messages } from './messages.js'
 
 //Create Mongo collection for the messages
 export const Edits = new Mongo.Collection("edits");
@@ -11,6 +12,7 @@ type: type of edit
 messageId: id of message this edit belongs to
 conversationId: id of conversation this message belongs to
 edit: edit that was made
+original: original text before edit
 createdAt: date object when created
 creatorId: userId of creator
 creatorUsername: username of creator
@@ -35,7 +37,7 @@ if (Meteor.isServer) {
 } 
 
 Meteor.methods({
-  'edits.new'(type,message,convo,edit){
+  'edits.new'(type,message,convo,original,edit){
     //Make sure the user is logged in before inserting
     if (! Meteor.userId()) {
       alert("Please sign in to edit a message");
@@ -49,6 +51,7 @@ Meteor.methods({
       type: type,
       messageId: message,
       conversationId: convo,
+      original: original,
       edit: edit,
       createdAt: new Date(),
       creatorId: Meteor.userId(),
@@ -66,10 +69,32 @@ Meteor.methods({
     };
 
     Edits.update({_id: id},{ $push: {additions: 
-                                          {sender: Meteor.userId(), 
+                                          {sender: Meteor.user().username, 
                                             addition: addition}
                                     }});
 
     return id;
   },
+  'edits.delete'(editId,messageId){
+    if (! Meteor.userId()) {
+      alert("Please sign in to edit a message");
+      throw new Meteor.Error("not-authorized");
+    };
+
+    const message = Messages.findOne(messageId,{"text":1}).text
+    const edit = Edits.findOne(editId,{edit:1,original:1,type:1})
+
+    const index = message.indexOf('<span id="'+editId);
+    console.log(index)
+    var lengthToRemove = 10 + editId.length + 9 + edit.type.length + 9;
+    if(edit.type === "Correction") lengthToRemove += (edit.original.length + 2 + edit.edit.length);
+    else lengthToRemove += (edit.original.length + 2 + edit.edit.length);
+    lengthToRemove += 7;
+
+    const output = message.substr(0,index) + edit.original + message.substr(index+lengthToRemove);
+
+    Messages.update(messageId,{ $set: {"text" : output} })
+    Edits.remove(editId)
+
+  }
 })

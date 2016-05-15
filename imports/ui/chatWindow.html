@@ -5,14 +5,17 @@
     			{{> message}}
     		{{/each}}
     	</ul>
-		<div class="input-group chat-input">
-			{{#if messageActive}}
-				{{> editing}}
-		    {{else}}
-			    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
-			    <span class="input-group-addon btn btn-primary message-send">Send</span>
-			    <span class="input-group-addon btn btn-primary message-translate">Translate</span>
-		   	{{/if}}
+    	<div class="chat-input">
+		{{inputTitle}}	    	
+			<div class="input-group">
+				{{#if messageActive}}
+					{{> editing}}
+			    {{else}}
+				    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
+				    <span class="input-group-addon btn btn-primary message-send">Send</span>
+				    <span class="input-group-addon btn btn-primary message-translate">Translate</span>
+			   	{{/if}}
+			</div>
 		</div>
 	</div>
 </template>

@@ -12,6 +12,7 @@ Template.editing.events({
 "click .edit-buttons>#1"(event) { //temporarily translates text in the textarea and replaces it in the input
   const textarea = $('.chat-input textarea');
   translate(Session.get('selectedText'), "en", "ja",function(translatedText){ //hardcoded english to japanese at the moment
+  	console.log(translatedText)
     textarea.append(translatedText);
   });
 },
@@ -32,13 +33,13 @@ Template.editing.events({
 		return
 	}
 
-	Meteor.call("edits.new", "correction", activeMessage, Session.get('activeConvo'), edit, function(error,newId){
+	Meteor.call("edits.new", "Correction", activeMessage, Session.get('activeConvo'),selectedText, edit, function(error,newId){
 		if(error){
 			console.log(error);
 			return;
 		}
 		console.log(newId);
-		const output = text.substr(0,i) + '<span class="corrected" id="'+newId+'">' + text.substr(i,selectedText.length) + '</span>' + text.substr(i+selectedText.length);
+		const output = text.substr(0,i) + '<span id="'+newId+'" class="correction" title="'+selectedText+'">' + edit + '</span>' + text.substr(i+selectedText.length);
 		Meteor.call("messages.correct",activeMessage,output)		
 	});
 },
