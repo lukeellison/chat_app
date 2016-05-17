@@ -3,6 +3,19 @@ import { Messages } from '../api/messages.js';
 import { Edits } from '../api/edits.js';
 
 Template.message.helpers({
+text(){
+	const rawText = this.text;
+	var outputHtml = rawText;
+	const activeMessage = Session.get('activeMessage');
+	if(this._id === activeMessage){
+		const edits = Edits.find({messageId: activeMessage},{ $sort: { "location.start": -1}});
+		edits.forEach(function(edit){
+			//outputHtml = text.substr(0,i) + '<span id="'+newId+'" class="correction" title="'+selectedText+'">' + edit + '</span>' + text.substr(i+selectedText.length)
+			console.log(edit.location.start);
+		})
+	}
+	return outputHtml;
+},
 time(id) {
   //return readable string from the sentAt
   var sentAt = Messages.findOne({_id : id}).sentAt;
@@ -15,35 +28,31 @@ active() {
 	return this._id === Session.get("activeMessage")
 },
 additions() {
-	if(Edits && Session.get('activeEdit')){
-		const editId = Session.get('activeEdit')
-		const additions = Edits.findOne(editId,{additions:1}).additions;
-		return additions;		
-	}
+	const editId = Session.get('activeEdit')
+	const edit = Edits.findOne(editId,{additions:1});
+	if(edit)
+		return edit.additions;
 	else return undefined;
 },
 editType() {
-	if(Edits && Session.get('activeEdit')){
-		const editId = Session.get('activeEdit')
-		const type = Edits.findOne(editId,{type:1}).type;
-		return type;		
-	}
+	const editId = Session.get('activeEdit')
+	const edit = Edits.findOne(editId,{type:1});
+	if(edit)
+		return edit.type;
 	else return undefined;
 },
 creatorUsername() {
-	if(Edits && Session.get('activeEdit')){
-		const editId = Session.get('activeEdit')
-		const username = Edits.findOne(editId,{creatorUsername:1}).username;
-		return username;		
-	}
+	const editId = Session.get('activeEdit')
+	const edit = Edits.findOne(editId,{creatorUsername:1});
+	if(edit)
+		return edit.username;
 	else return undefined;
 },
 edit() {
-	if(Edits && Session.get('activeEdit')){
-		const editId = Session.get('activeEdit')
-		const edit = Edits.findOne(editId,{edit:1}).edit;
-		return edit;		
-	}
+	const editId = Session.get('activeEdit')
+	const edit = Edits.findOne(editId,{edit:1});
+	if(edit)
+		return edit.edit;
 	else return undefined;
 },
 

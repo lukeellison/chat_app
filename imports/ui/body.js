@@ -20,6 +20,7 @@ Template.body.events({
   const target = event.target; 
   if($(target).is(".chat-messages")){
     Session.set("activeMessage",undefined)
+    Session.set("selectedText",undefined)
   }
 }
 });

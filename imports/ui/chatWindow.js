@@ -1,9 +1,12 @@
 import './chatWindow.html'
 import { Messages } from '../api/messages.js'
+import { Edits } from '../api/edits.js'
 import './message.js';
 import './editing.js'
 import { translate } from './helpers.js'
 import { getSelected } from './helpers.js'
+import { getSelectionCharOffsetsWithin } from './helpers.js'
+import { rangeInEdit } from './helpers.js'
 
 Template.chatWindow.helpers({
   messages() { //retrieves active conversations messages in the databases from client (insecure)
@@ -13,8 +16,8 @@ Template.chatWindow.helpers({
     return Messages.find({conversationId: convo}, {sort: {sentAt : 1}}); //Return the messages for the active conversation
 
   },
-  messageActive(){ //Checks to see if a message is currently selected
-    return Session.get("activeMessage") != undefined
+  selectedText(){ //Checks to see if a message is currently selected
+    return Session.get("selectedText") != undefined
   },
   inputTitle(){
     if(Session.get("activeMessage")){
@@ -55,23 +58,28 @@ Template.chatWindow.events({
   if($(target).is(".message-text")){
     Session.set("clickedMessage", this._id);
   }
-
 }, 
 "mouseup .message"(event) { //event for clicking on messages and sets the selectedText session variable limited to 100 charactars
   Session.set("activeMessage",this._id); //set this message as active
-  const clickedMessage = Session.get("clickedMessage");
-  if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
-    const text = getSelected();
-    if(text !== "") //if there was not nothing highlighted
-      Session.set('selectedText',text.substr(0,100)); //Use the highlighted text (100 char limit)
-    else{
-      //otherwise use the whole message (100 char limit) after removing html tags
-      var out = this.text.replace(/<(?:.|\n)*?>/gm, '');
-      out = out.substr(0,100);
-      Session.set('selectedText',out);
+
+  const target = event.target; 
+  if($(target).is(".message-text")){
+    const clickedMessage = Session.get("clickedMessage");
+    if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
+      const range = getSelectionCharOffsetsWithin(target)
+      if(range.start !== range.end){ //if there was not nothing highlighted
+        if(rangeInEdit(range))
+          console.log("clicked edit")
+        const text = getSelected();
+        Session.set('selectedText',text.substr(0,100)); //Use the highlighted text (100 char limit)
+        Session.set('selectedTextRange',range);
+      }
+      else{
+        Session.set('selectedText',undefined);
+        Session.set('selectedTextRange',undefined);
+      }
     }
-       
-  }
+  }     
   Session.set('clickedMessage',undefined) //if the mouse came back up elsewhere then cancel the mousedown event
 },
 });

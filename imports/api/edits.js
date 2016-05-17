@@ -13,6 +13,8 @@ messageId: id of message this edit belongs to
 conversationId: id of conversation this message belongs to
 edit: edit that was made
 original: original text before edit
+location: { start: start index of edit in text
+            end: end index }
 createdAt: date object when created
 creatorId: userId of creator
 creatorUsername: username of creator
@@ -23,7 +25,7 @@ if (Meteor.isServer) {
   // This code only runs on the server
   // Only publish convos that belong to the current user
 
-  Meteor.publish('edits', function editssPublication() {
+  Meteor.publish('edits', function editsPublication() {
     if (!this.userId) {
       return this.ready();
     }
@@ -37,7 +39,7 @@ if (Meteor.isServer) {
 } 
 
 Meteor.methods({
-  'edits.new'(type,message,convo,original,edit){
+  'edits.new'(type,message,convo,original,edit,location){
     //Make sure the user is logged in before inserting
     if (! Meteor.userId()) {
       alert("Please sign in to edit a message");
@@ -53,6 +55,7 @@ Meteor.methods({
       conversationId: convo,
       original: original,
       edit: edit,
+      location: location,
       createdAt: new Date(),
       creatorId: Meteor.userId(),
       creatorUsername: Meteor.user().username,

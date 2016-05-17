@@ -1,3 +1,5 @@
+import { Edits } from '../api/edits.js';
+
 export const translate = function(sourceText,sourceLang,targetLang,callback){
 	const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
  				+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
@@ -24,4 +26,43 @@ export const getSelected = function(){ //check if any text is highlighted and gr
       text = document.selection.createRange().text;
   }
   return text;
+}
+
+export const getSelectionCharOffsetsWithin = function (element) {
+    var start = 0, end = 0;
+    var sel, range, priorRange;
+    if (typeof window.getSelection != "undefined") {
+        range = window.getSelection().getRangeAt(0);
+        priorRange = range.cloneRange();
+        priorRange.selectNodeContents(element);
+        priorRange.setEnd(range.startContainer, range.startOffset);
+        start = priorRange.toString().length;
+        end = start + range.toString().length;
+    } else if (typeof document.selection != "undefined" &&
+        (sel = document.selection).type != "Control") {
+        range = sel.createRange();
+        priorRange = document.body.createTextRange();
+        priorRange.moveToElementText(element);
+        priorRange.setEndPoint("EndToStart", range);
+        start = priorRange.text.length;
+        end = start + range.text.length;
+    }
+    return {
+        start: start,
+        end: end
+    };
+}
+
+export const rangeInEdit = function (range) {
+  return Edits.findOne(
+    { $or : [
+      { $and : [
+        {"location.start": { $gte : range.start }},
+        {"location.end" : { $lte : range.start }}
+      ]},
+      { $and : [
+        {"location.start": { $gte : range.end }},
+        {"location.end" : { $lte : range.end }}
+      ]}
+    ]})
 }
