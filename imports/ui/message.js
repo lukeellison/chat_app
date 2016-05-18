@@ -6,14 +6,11 @@ Template.message.helpers({
 text(){
 	const rawText = this.text;
 	var outputHtml = rawText;
-	const activeMessage = Session.get('activeMessage');
-	if(this._id === activeMessage){
-		const edits = Edits.find({messageId: activeMessage},{ $sort: { "location.start": -1}});
-		edits.forEach(function(edit){
-			//outputHtml = text.substr(0,i) + '<span id="'+newId+'" class="correction" title="'+selectedText+'">' + edit + '</span>' + text.substr(i+selectedText.length)
-			console.log(edit.location.start);
-		})
-	}
+	const edits = Edits.find({messageId: this._id},{ $sort: { "location.start": -1}});
+	console.log(edits)
+	edits.forEach(function(edit){
+		outputHtml = outputHtml.substr(0,edit.location.start) + '<span id="'+edit._id+'" class="'+edit.type+'" title="'+edit.original+'">' + edit.edit + '</span>' + outputHtml.substr(edit.location.end);
+	});
 	return outputHtml;
 },
 time(id) {
