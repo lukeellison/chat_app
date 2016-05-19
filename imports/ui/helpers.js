@@ -53,16 +53,18 @@ export const getSelectionCharOffsetsWithin = function (element) {
     };
 }
 
-export const rangeInEdit = function (range) {
+export const rangeInEdit = function (range,message) {
   return Edits.findOne(
     { $or : [
       { $and : [
-        {"location.start": { $gte : range.start }},
-        {"location.end" : { $lte : range.start }}
+        {messageId : message},
+        {"location.start": { $lte : range.start }},
+        {"location.end" : { $gte : range.start }}
       ]},
       { $and : [
-        {"location.start": { $gte : range.end }},
-        {"location.end" : { $lte : range.end }}
+        {messageId : message},
+        {"location.start": { $lte : range.end }},
+        {"location.end" : { $gte : range.end }}
       ]}
     ]})
 }

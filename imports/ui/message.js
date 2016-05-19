@@ -7,7 +7,6 @@ text(){
 	const rawText = this.text;
 	var outputHtml = rawText;
 	const edits = Edits.find({messageId: this._id},{ $sort: { "location.start": -1}});
-	console.log(edits)
 	edits.forEach(function(edit){
 		outputHtml = outputHtml.substr(0,edit.location.start) + '<span id="'+edit._id+'" class="'+edit.type+'" title="'+edit.original+'">' + edit.edit + '</span>' + outputHtml.substr(edit.location.end);
 	});
@@ -56,7 +55,7 @@ edit() {
 });
 
 Template.message.events({
-"click .correction"(event) { //displays the correction
+"click .Correction"(event) { //displays the correction
 	const id = event.target.id;
 	Session.set('activeEdit',id)
 	const form = $('.message.active').find(".edit-additions");
@@ -64,12 +63,18 @@ Template.message.events({
 },
 "click .edit-additions>.hide-pane"(event) {
 	const form = $('.message.active').find(".edit-additions");
-	form.slideUp();
+	form.slideUp(function(){
+	    Session.set('activeEdit',undefined);
+	});
 },
 "click .edit-additions>.delete-edit"(event) {
 	const form = $('.message.active').find(".edit-additions");
-	form.slideUp();
+	form.slideUp(function(){
+	    Session.set('activeEdit',undefined);
+	});
 	Meteor.call('edits.delete',Session.get('activeEdit'),Session.get('activeMessage'))
+    Session.set('selectedText',undefined);
+    Session.set('selectedTextRange',undefined);        
 },
 'submit .additionForm'(event) {
 // Prevent default browser form submit

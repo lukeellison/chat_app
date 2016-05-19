@@ -3,6 +3,8 @@ import { Messages } from '../api/messages.js'
 import { Edits } from '../api/edits.js'
 import './message.js';
 import './editing.js'
+
+//Import helper functions
 import { translate } from './helpers.js'
 import { getSelected } from './helpers.js'
 import { getSelectionCharOffsetsWithin } from './helpers.js'
@@ -16,16 +18,18 @@ Template.chatWindow.helpers({
     return Messages.find({conversationId: convo}, {sort: {sentAt : 1}}); //Return the messages for the active conversation
 
   },
-  selectedText(){ //Checks to see if a message is currently selected
-    return Session.get("selectedText") != undefined
+  selectedText(){ //Checks to see if any text is selected for showing the editing window
+    return Session.get("selectedText") !== undefined 
   },
-  inputTitle(){
-    if(Session.get("activeMessage")){
-      if(Session.get('activeEdit')){
-        return "Modifying selected edit to:"        
+  inputTitle(){ //A message to explain what is being edited
+    const range = Session.get('selectedTextRange')
+    if(range){ 
+      if(rangeInEdit(range,Session.get('activeMessage'))){
+        return "Modifying selected edit:"        
       }
       else return "New edit of selected part of message:"
     }
+    else return "New message:"
   },
 });
 
@@ -55,31 +59,45 @@ Template.chatWindow.events({
 },
 "mousedown .message"(event) { //Checks which message the mouse button was pressed on for highlighting
   const target = event.target; 
-  if($(target).is(".message-text")){
-    Session.set("clickedMessage", this._id);
+  console.log("mousedown in " + this._id)
+  if($(target).is(".message-text") || $(target).parent().is(".message-text")){ //check if you clicked inside the text (accounting for corrections)
+    Session.set("clickedMessage", this._id); //Sets a session varibles to limit highlighting within this message
   }
 }, 
-"mouseup .message"(event) { //event for clicking on messages and sets the selectedText session variable limited to 100 charactars
-  Session.set("activeMessage",this._id); //set this message as active
+"mouseup .message"(event) { //text has been highlighted event
+  Session.set("activeMessage",this._id); //set this message as active if it was clicked
+  const target = event.target;
+  console.log("mouseup in " + this._id)
+  console.log(target)
 
-  const target = event.target; 
-  if($(target).is(".message-text")){
-    const clickedMessage = Session.get("clickedMessage");
-    if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
-      const range = getSelectionCharOffsetsWithin(target)
-      if(range.start !== range.end){ //if there was not nothing highlighted
-        if(rangeInEdit(range))
-          console.log("clicked edit")
-        const text = getSelected();
-        Session.set('selectedText',text.substr(0,100)); //Use the highlighted text (100 char limit)
+  const clickedMessage = Session.get("clickedMessage");
+  if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
+    var range = undefined; 
+    if($(target).is(".message-text")){
+      range = getSelectionCharOffsetsWithin(target);
+    }
+    else if($(target).is(".Correction")){
+      range = getSelectionCharOffsetsWithin(target.parentElement);
+    }
+
+    const edit = rangeInEdit(range,this._id);
+    if(range && edit === undefined){
+      if(range.start !== range.end){
+        Session.set('selectedText',getSelected());
         Session.set('selectedTextRange',range);
       }
       else{
         Session.set('selectedText',undefined);
-        Session.set('selectedTextRange',undefined);
+        Session.set('selectedTextRange',undefined);        
       }
     }
-  }     
-  Session.set('clickedMessage',undefined) //if the mouse came back up elsewhere then cancel the mousedown event
+    else if(range && edit){
+      Session.set('selectedText',edit.edit)
+      Session.set('selectedTextRange',edit.location)
+      Session.set('activeEdit',edit._id)
+    }
+  }
+
+  Session.set('clickedMessage',undefined) //cancel the mousedown event
 },
 });

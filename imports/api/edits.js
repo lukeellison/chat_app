@@ -78,26 +78,21 @@ Meteor.methods({
 
     return id;
   },
-  'edits.delete'(editId,messageId){
+  'edits.delete'(editId){
     if (! Meteor.userId()) {
-      alert("Please sign in to edit a message");
+      alert("Please sign in to delete an edit");
       throw new Meteor.Error("not-authorized");
     };
 
-    const message = Messages.findOne(messageId,{"text":1}).text
-    const edit = Edits.findOne(editId,{edit:1,original:1,type:1})
-
-    const index = message.indexOf('<span id="'+editId);
-    console.log(index)
-    var lengthToRemove = 10 + editId.length + 9 + edit.type.length + 9;
-    if(edit.type === "Correction") lengthToRemove += (edit.original.length + 2 + edit.edit.length);
-    else lengthToRemove += (edit.original.length + 2 + edit.edit.length);
-    lengthToRemove += 7;
-
-    const output = message.substr(0,index) + edit.original + message.substr(index+lengthToRemove);
-
-    Messages.update(messageId,{ $set: {"text" : output} })
     Edits.remove(editId)
 
+  },
+  'edits.update'(editId,newType,newEdit){
+    if (! Meteor.userId()) {
+      alert("Please sign in to update an edit");
+      throw new Meteor.Error("not-authorized");
+    };
+
+    Edits.update({_id : editId}, {$set: {edit: newEdit, type: newType}})
   }
 })
