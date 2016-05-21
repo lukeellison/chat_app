@@ -93,3 +93,10 @@ Template.chatWindow.events({
   Session.set('clickedMessage',undefined) //cancel the mousedown event
 },
 });
+
+Template.chatWindow.onRendered(function() {
+  Session.set('tick',true);
+  Meteor.setInterval(function() {
+    Session.set('tick', !Session.get('tick'));
+  }, 10000); // Replace 1000 with your level of time detail
+});

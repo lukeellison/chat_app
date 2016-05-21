@@ -15,10 +15,31 @@ text(){
 	});
 	return outputHtml;
 },
-time(id) {
+time() {
   //return readable string from the sentAt
-  var sentAt = Messages.findOne({_id : id}).sentAt;
-  return sentAt.toDateString();
+  Session.get('tick') //Make this helper rerun every interval
+
+  const now = new Date();
+  const time = this.sentAt
+  const dt = (now.getTime()/1000) - (time.getTime()/1000);
+try{
+  if(dt < 10){ //10 seconds
+  	return "A few seconds ago"
+  }
+  else if(dt < 60){ //60 seconds
+  	return "Less than a minute ago"
+  }
+  else if(dt < 60*5){ //5 mins
+  	return "A few minutes ago"
+  }
+  else if(dt < 60*60*24){ //1 day
+  	if(now.getDate()>time.getDate()) //yesterday
+  	return "yesterday at " + ("0" + time.getHours()).slice(-2) +":"+ ("0" + time.getMinutes()).slice(-2);
+  	else return "Today at " + ("0" + time.getHours()).slice(-2) +":"+ ("0" + time.getMinutes()).slice(-2);
+  }
+  else
+  	return this.sentAt.toDateString();
+}catch(e){console.log(e)}
 },
 thisUser() {
 	return this.senderId === Meteor.userId()
