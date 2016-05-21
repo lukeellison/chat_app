@@ -6,9 +6,12 @@ Template.message.helpers({
 text(){
 	const rawText = this.text;
 	var outputHtml = rawText;
-	const edits = Edits.find({messageId: this._id},{ $sort: { "location.start": -1}});
+	const edits = Edits.find({messageId: this._id},{ sort: { "location.start": -1}});
 	edits.forEach(function(edit){
-		outputHtml = outputHtml.substr(0,edit.location.start) + '<span id="'+edit._id+'" class="'+edit.type+'" title="'+edit.original+'">' + edit.edit + '</span>' + outputHtml.substr(edit.location.end);
+		if(edit.type === "correction")
+			outputHtml = outputHtml.substr(0,edit.location.start) + '<span id="'+edit._id+'" class=" edit '+edit.type+'" title="'+edit.original+'">' + edit.edit + '</span>' + outputHtml.substr(edit.location.end);
+		else		
+			outputHtml = outputHtml.substr(0,edit.location.start) + '<span id="'+edit._id+'" class=" edit '+edit.type+'" title="'+edit.edit+'">' + edit.original + '</span>' + outputHtml.substr(edit.location.end);
 	});
 	return outputHtml;
 },
@@ -55,7 +58,7 @@ edit() {
 });
 
 Template.message.events({
-"click .Correction"(event) { //displays the correction
+"click .edit"(event) { //displays the correction
 	const id = event.target.id;
 	Session.set('activeEdit',id)
 	const form = $('.message.active').find(".edit-additions");

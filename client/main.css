@@ -225,16 +225,31 @@ li time {
  * Edits
  */
 
-.Correction {
-  background-color: rgba(235,148,148,.6);
+.correction {
+  background-color: rgba(219,68,55,.6);
 }
-.Correction:hover {
-  background-color: rgba(235,148,148,.9);
+.correction:hover {
+  background-color: rgba(219,68,55,.9);
+  cursor: pointer;
+}
+.suggestion {
+  background-color: rgba(244,180,0,.6);
+}
+.suggestion:hover {
+  background-color: rgba(244,180,0,.9);
+  cursor: pointer;
+}
+.comment {
+  background-color: rgba(15,157,88,.6);
+}
+.comment:hover {
+  background-color: rgba(15,157,88,.9);
   cursor: pointer;
 }
 
 .edit-additions {
   display: none;
+  width: 100%;
   border-top: 1px solid #999;
 }
 

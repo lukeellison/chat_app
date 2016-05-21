@@ -64,10 +64,10 @@ Template.chatWindow.events({
   const selection = getSelectionTextAndContainerElement();
   const selectionEl = selection.containerElement;
 
-  if($(selectionEl).is(".message-text") || $(selectionEl).is(".Correction")){ //if the selection is contained within a message text element
+  if($(selectionEl).is(".message-text") || $(selectionEl).is(".edit")){ //if the selection is contained within a message text element
     var messageEl = undefined;
     if($(selectionEl).is(".message-text")) messageEl = selectionEl;
-    else if($(selectionEl).is(".Correction")) messageEl = selectionEl.parentElement;
+    else if($(selectionEl).is(".edit")) messageEl = selectionEl.parentElement;
     
     var range = getSelectionCharOffsetsWithin(messageEl);
     const edit = rangeInEdit(range,this._id); //If the range of the highlighted section is in an existing edit find it

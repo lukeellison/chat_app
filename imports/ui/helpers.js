@@ -80,11 +80,11 @@ export const rangeInEdit = function (range,message) { //Checks if a range is alr
       { $and : [
         {messageId : message},
         {"location.start": { $lte : range.start }},
-        {"location.end" : { $gte : range.start }}
+        {"location.end" : { $gt : range.start }}
       ]},
       { $and : [
         {messageId : message},
-        {"location.start": { $lte : range.end }},
+        {"location.start": { $lt : range.end }},
         {"location.end" : { $gte : range.end }}
       ]}
     ]})
