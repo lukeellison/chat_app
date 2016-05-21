@@ -215,10 +215,6 @@
   margin-right: 30%;
 }
 
-.corrected {
-  color: red !important;
-}
-
 li time {
   float: right;
 	font-style: italic;
@@ -226,11 +222,15 @@ li time {
 }
 
 /*
- * Corrections
+ * Edits
  */
 
 .Correction {
-  color: red;
+  background-color: rgba(235,148,148,.6);
+}
+.Correction:hover {
+  background-color: rgba(235,148,148,.9);
+  cursor: pointer;
 }
 
 .edit-additions {

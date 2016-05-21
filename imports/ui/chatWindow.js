@@ -6,9 +6,10 @@ import './editing.js'
 
 //Import helper functions
 import { translate } from './helpers.js'
-import { getSelected } from './helpers.js'
+import { getSelectionTextAndContainerElement } from './helpers.js'
 import { getSelectionCharOffsetsWithin } from './helpers.js'
 import { rangeInEdit } from './helpers.js'
+
 
 Template.chatWindow.helpers({
   messages() { //retrieves active conversations messages in the databases from client (insecure)
@@ -57,44 +58,35 @@ Template.chatWindow.events({
     textarea.val(translatedText);
   });
 },
-"mousedown .message"(event) { //Checks which message the mouse button was pressed on for highlighting
-  const target = event.target; 
-  console.log("mousedown in " + this._id)
-  if($(target).is(".message-text") || $(target).parent().is(".message-text")){ //check if you clicked inside the text (accounting for corrections)
-    Session.set("clickedMessage", this._id); //Sets a session varibles to limit highlighting within this message
-  }
-}, 
-"mouseup .message"(event) { //text has been highlighted event
+
+"mouseup .message-text"(event) { //text has been highlighted event
   Session.set("activeMessage",this._id); //set this message as active if it was clicked
-  const target = event.target;
-  console.log("mouseup in " + this._id)
-  console.log(target)
+  const selection = getSelectionTextAndContainerElement();
+  const selectionEl = selection.containerElement;
 
-  const clickedMessage = Session.get("clickedMessage");
-  if(clickedMessage === this._id){ //if the mouse also went down on this message then text might be highlighted in this message
-    var range = undefined; 
-    if($(target).is(".message-text")){
-      range = getSelectionCharOffsetsWithin(target);
-    }
-    else if($(target).is(".Correction")){
-      range = getSelectionCharOffsetsWithin(target.parentElement);
-    }
+  if($(selectionEl).is(".message-text") || $(selectionEl).is(".Correction")){ //if the selection is contained within a message text element
+    var messageEl = undefined;
+    if($(selectionEl).is(".message-text")) messageEl = selectionEl;
+    else if($(selectionEl).is(".Correction")) messageEl = selectionEl.parentElement;
+    
+    var range = getSelectionCharOffsetsWithin(messageEl);
+    const edit = rangeInEdit(range,this._id); //If the range of the highlighted section is in an existing edit find it
 
-    const edit = rangeInEdit(range,this._id);
-    if(range && edit === undefined){
-      if(range.start !== range.end){
-        Session.set('selectedText',getSelected());
-        Session.set('selectedTextRange',range);
+    if(range.start !== range.end){ //If something was actually highlighted
+      if(edit){ //If the selection includes an existing edit
+        //edit that existing edit
+        Session.set('selectedText',edit.edit) 
+        Session.set('selectedTextRange',edit.location)
+        $(messageEl).children("#"+edit._id).click();      
       }
-      else{
-        Session.set('selectedText',undefined);
-        Session.set('selectedTextRange',undefined);        
+      else{ //otherwise start a new edit
+        Session.set('selectedText',selection.text);
+        Session.set('selectedTextRange',range);      
       }
     }
-    else if(range && edit){
-      Session.set('selectedText',edit.edit)
-      Session.set('selectedTextRange',edit.location)
-      Session.set('activeEdit',edit._id)
+    else{ //If it was just a click then deselect
+      Session.set('selectedText',undefined);
+      Session.set('selectedTextRange',undefined);        
     }
   }
 

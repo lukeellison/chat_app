@@ -22,7 +22,7 @@ Template.editing.events({
 	const selectedText = Session.get('selectedText');
 	const location = Session.get('selectedTextRange');
 	const activeMessage = Session.get('activeMessage');
-	const activeEdit = Session.get('activeEdit')
+	const activeEdit = Session.get('activeEdit');
 		
 	//get the text in the input
 	const edit = $('.chat-input textarea').val()

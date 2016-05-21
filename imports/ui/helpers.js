@@ -1,6 +1,6 @@
 import { Edits } from '../api/edits.js';
 
-export const translate = function(sourceText,sourceLang,targetLang,callback){
+export const translate = function(sourceText,sourceLang,targetLang,callback){ //Translate function
 	const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" 
  				+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
 
@@ -28,7 +28,28 @@ export const getSelected = function(){ //check if any text is highlighted and gr
   return text;
 }
 
-export const getSelectionCharOffsetsWithin = function (element) {
+export const getSelectionTextAndContainerElement = function() { //Gets the highlighted text as well as the element that the selection is in
+    var text = "", containerElement = null;
+    if (typeof window.getSelection != "undefined") {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var node = sel.getRangeAt(0).commonAncestorContainer;
+            containerElement = node.nodeType == 1 ? node : node.parentNode;
+            text = sel.toString();
+        }
+    } else if (typeof document.selection != "undefined" &&
+               document.selection.type != "Control") {
+        var textRange = document.selection.createRange();
+        containerElement = textRange.parentElement();
+        text = textRange.text;
+    }
+    return {
+        text: text,
+        containerElement: containerElement
+    };
+}
+
+export const getSelectionCharOffsetsWithin = function (element) { //Function gets index of highlighted text in an element
     var start = 0, end = 0;
     var sel, range, priorRange;
     if (typeof window.getSelection != "undefined") {
@@ -53,7 +74,7 @@ export const getSelectionCharOffsetsWithin = function (element) {
     };
 }
 
-export const rangeInEdit = function (range,message) {
+export const rangeInEdit = function (range,message) { //Checks if a range is already in the range of another edit
   return Edits.findOne(
     { $or : [
       { $and : [

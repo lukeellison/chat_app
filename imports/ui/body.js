@@ -21,6 +21,7 @@ Template.body.events({
   if($(target).is(".chat-messages")){
     Session.set("activeMessage",undefined)
     Session.set("selectedText",undefined)
+    Session.set("selectedTextRange",undefined)
   }
 }
 });
