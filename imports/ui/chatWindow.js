@@ -95,8 +95,8 @@ Template.chatWindow.events({
 });
 
 Template.chatWindow.onRendered(function() {
-  Session.set('tick',true);
+  Session.set('tick',true); //Create 10 second clock for reactivity
   Meteor.setInterval(function() {
     Session.set('tick', !Session.get('tick'));
-  }, 10000); // Replace 1000 with your level of time detail
+  }, 10000);
 });

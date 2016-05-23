@@ -22,7 +22,6 @@ time() {
   const now = new Date();
   const time = this.sentAt
   const dt = (now.getTime()/1000) - (time.getTime()/1000);
-try{
   if(dt < 10){ //10 seconds
   	return "A few seconds ago"
   }
@@ -39,7 +38,6 @@ try{
   }
   else
   	return this.sentAt.toDateString();
-}catch(e){console.log(e)}
 },
 thisUser() {
 	return this.senderId === Meteor.userId()
@@ -114,4 +112,8 @@ Meteor.call('edits.add',Session.get('activeEdit'),text)
 // Clear form
 target.text.value = '';
 },
+});
+
+Template.message.onRendered(function() {
+	$(".chat-messages").prop({ scrollTop: $(".chat-messages").prop("scrollHeight") });	
 });
