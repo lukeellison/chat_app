@@ -12,6 +12,7 @@ text: message content
 sentAt: date object when sent
 senderId: userId of sender
 senderUsername: username of sender
+read: boolean
 */
 
 if (Meteor.isServer) {
@@ -32,31 +33,47 @@ if (Meteor.isServer) {
 } 
 
 Meteor.methods({
-  'messages.send'(convo, text) { //Method called when pressing the send button on a message
-  	check(text, String); //Check if input is a string
+'messages.send'(convo, text) { //Method called when pressing the send button on a message
+	check(text, String); //Check if input is a string
 
-    //Make sure the user is logged in before sending
-    if (! Meteor.userId()) {
-      alert("Please sign in to send a message");
-      throw new Meteor.Error("not-authorized");
-    }
-    
-    //Insert into database
-    Messages.insert({
-      conversationId: convo,
-      text: text,
-      sentAt: new Date(),
-      senderId: Meteor.userId(),
-      senderUsername: Meteor.user().username
-    });
-  },
-  'messages.correct'(message,text) {
-    //Make sure the user is logged in before updating
-    if (! Meteor.userId()) {
-      alert("Please sign in to edit a message");
-      throw new Meteor.Error("not-authorized");
-    }
-
-    Messages.update(message,{ $set: {"text" : text} })
+  //Make sure the user is logged in before sending
+  if (! Meteor.userId()) {
+    alert("Please sign in to send a message");
+    throw new Meteor.Error("not-authorized");
   }
+  
+  //Insert into database
+  Messages.insert({
+    conversationId: convo,
+    text: text,
+    sentAt: new Date(),
+    senderId: Meteor.userId(),
+    senderUsername: Meteor.user().username,
+    read: false
+  });
+},
+'messages.correct'(message,text) {
+  //Make sure the user is logged in before updating
+  if (! Meteor.userId()) {
+    alert("Please sign in to edit a message");
+    throw new Meteor.Error("not-authorized");
+  }
+
+  Messages.update(message,{ $set: {"text" : text} })
+},
+'messages.read'(conversation){
+  //Make sure the user is logged in before marking read
+  if (! Meteor.userId()) {
+    alert("Please sign in to send a message");
+    throw new Meteor.Error("not-authorized");
+  }
+
+  Messages.update( //read messages in this conversation that were not sent by me
+    {
+      conversationId:conversation,
+      senderId:{$ne:Meteor.userId()}
+    },
+    {$set: {read: true}},
+    {multi: true})
+}
 });

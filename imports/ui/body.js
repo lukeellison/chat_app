@@ -23,5 +23,9 @@ Template.body.events({
     Session.set("selectedText",undefined)
     Session.set("selectedTextRange",undefined)
   }
-}
+},
+});
+
+$(window).focus(function() {
+  Meteor.call('messages.read',Session.get('activeConvo'))
 });

@@ -1,5 +1,7 @@
 import './conversation.html'
 
+import { Messages } from '../api/messages.js';
+
 Template.conversation.helpers({
 convoName() {
   const name = this.name;
@@ -22,6 +24,14 @@ convoName() {
 },
 active(){ //Checks if this conversation is active
   return this._id === Session.get('activeConvo');
+},
+num_unread(){
+  const messages = Messages.find({
+    conversationId:this._id,
+    read:false,
+    senderId:{$ne:Meteor.userId()}
+  })
+  return messages.count()
 }
 
 });
@@ -31,5 +41,10 @@ Template.body.events({
     Session.set('activeConvo', this._id);
     //Also deactive selected message from previous conversation
     Session.set("activeMessage",undefined)
+    Session.set("selectedText",undefined)
+    Session.set("selectedTextRange",undefined)
+
+    //mark read messages
+    Meteor.call('messages.read',this._id)
   },
 });

@@ -2,7 +2,7 @@
 	<li class="clearfix message {{#if thisUser}}message-sent{{else}}message-received{{/if}} {{#if active}}active{{/if}}">
 		<span class="message-title">
 			<strong>{{senderUsername}}:</strong>
-			<time>{{time _id}}</time>			
+			<time>{{time _id}}{{#unless read}} - [unread]{{/unless}}</time>			
 		</span>
 		<span class="message-text dont-break-out">{{{text}}}</span>
 		{{#if active}}

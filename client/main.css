@@ -82,6 +82,14 @@
 
 
 /*
+ * Conversations
+ */
+
+.conversation .badge{
+  float: right;
+}
+
+/*
  * Bottom bar
  */
 
