@@ -3,8 +3,9 @@ import { Template } from 'meteor/templating';
 import './body.html'; //Load body html
 import '../../client/main.css';
 import '../api/messages.js'; //Load Messages database collection and methods
+import '../api/users.js'
 import '../api/conversations.js';
-import '../api/edits.js'
+import '../api/edits.js';
 
 import './sidebar.js'
 import './chatWindow.js';
@@ -13,6 +14,7 @@ Template.body.onCreated(function bodyOnCreated() {
   Meteor.subscribe('convos');
   Meteor.subscribe('messages');
   Meteor.subscribe('edits');
+  Meteor.subscribe('matchedUsers');
 });
 
 Template.body.events({
@@ -29,3 +31,4 @@ Template.body.events({
 $(window).focus(function() {
   Meteor.call('messages.read',Session.get('activeConvo'))
 });
+

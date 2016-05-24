@@ -1,6 +1,7 @@
 <template name="conversation">
 	<li class="conversation {{#if active}}active{{/if}}">
 		<a href="#">
+			<div class="status {{status}}" title="{{status}}"></div>
 			<span class="name"><strong>{{convoName}}</strong></span>
 			{{#if num_unread}}
 				<span class="badge">{{num_unread}}</span>

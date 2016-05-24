@@ -15,6 +15,8 @@ Template.body.events({
 
   Meteor.call('conversations.matchmake',function(error,result){
   	if(!result) alert("No more unmatched users");
+    //Resubscribe to gain info about this user (did not want people to be able to pass arguments to this subscription so it is not reactive)
+  	Meteor.subscribe('matchedUsers');
   });
 
 //  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos

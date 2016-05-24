@@ -63,10 +63,6 @@ Meteor.methods({
 },
 'messages.read'(conversation){
   //Make sure the user is logged in before marking read
-  if (! Meteor.userId()) {
-    alert("Please sign in to send a message");
-    throw new Meteor.Error("not-authorized");
-  }
 
   Messages.update( //read messages in this conversation that were not sent by me
     {

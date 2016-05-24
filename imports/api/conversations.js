@@ -81,6 +81,11 @@ Meteor.methods({
       lastMessage: new Date(),
       name: ""
     });
+
+    //Add a field to the user collection to keep track of who the user is matched with
+    Meteor.users.update(Meteor.userId(),{$push:{'matched.users':randUser._id}})
+    Meteor.users.update(randUser._id,{$push:{'matched.users':Meteor.userId()}})
+
     return true;
   },
 });

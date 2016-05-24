@@ -32,6 +32,20 @@ num_unread(){
     senderId:{$ne:Meteor.userId()}
   })
   return messages.count()
+},
+status(){
+  //Find userIds in this conversation not including yourself
+  convoUsers = this.users.ids.slice() //make copy for splice
+  convoUsers.splice(convoUsers.indexOf(Meteor.userId()),1)
+
+  //For now the collection for one of them (should only be one atm)
+  user = Meteor.users.findOne({
+    _id:{$in:convoUsers}
+  })
+
+  //return their status
+  if(user) return user.presence.status
+  else return 'offline'
 }
 
 });
