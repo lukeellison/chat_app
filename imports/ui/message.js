@@ -115,5 +115,7 @@ target.text.value = '';
 });
 
 Template.message.onRendered(function() {
-	$(".chat-messages").prop({ scrollTop: $(".chat-messages").prop("scrollHeight") });	
+	//whenever a new message is rendered
+	$(".chat-messages").prop({ scrollTop: $(".chat-messages").prop("scrollHeight") }); //scroll to new message
+	Meteor.call('messages.read',Session.get('activeConvo')) //set it as read
 });
