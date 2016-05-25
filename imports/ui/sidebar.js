@@ -19,6 +19,5 @@ Template.body.events({
   	Meteor.subscribe('matchedUsers');
   });
 
-//  Meteor.call("conversations.new", "Kd5NSiiw4uTuaXYdC", ["Luke", "Jeff", "Jeff2"]); //Temporarily using this to just make convos
 },
 });
