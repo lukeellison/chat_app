@@ -6,7 +6,9 @@ Template.sidebar.helpers({
   conversations() { //retrives conversations that this user is in
     const id = Meteor.userId();
 
-    return Conversations.find({ "users.ids" : id })
+    const convos = Conversations.find({ "users.ids" : id })
+	if(convos.count()) return convos;
+	else return false
   }
 });
 

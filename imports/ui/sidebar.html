@@ -1,14 +1,18 @@
 <template name="sidebar">
 	<div class="above-bottom-bar">
-	  <ul class="nav nav-sidebar">
-	  	{{#each conversations}}
-	  		{{> conversation}}
-	  	{{/each}}
-	    <li class=""><a href="#">User1 <span class="sr-only">(current)</span></a></li>
-	    <li><a href="#">User2</a></li>
-	    <li><a href="#">User3</a></li>
-	    <li><a href="#">User4</a></li>
-	  </ul>
+		{{#if conversations}}
+			<ul class="nav nav-sidebar">
+				{{#each conversations}}
+					{{> conversation}}
+				{{/each}}
+			</ul>
+		{{else}}
+			<div class="no-convo">
+				<p>Conversations will be displayed here</p>
+				<p>Click 'Matchmake' below to search for conversations</p>
+				<p><span class="glyphicon glyphicon-arrow-down"></span></p>
+			</div>
+		{{/if}}
 	</div>
 
 	<div class="bottom-bar">

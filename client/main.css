@@ -102,6 +102,14 @@
   float: right;
 }
 
+.sidebar .no-convo{
+  font-family:"Century Gothic", "HelveticaNeueLT Pro 45 Lt", sans-serif;
+  font-size: 10px;
+  font-weight: bold;
+  color: #AAA; 
+  text-align: center;
+}
+
 /*
  * Bottom bar
  */
@@ -147,6 +155,18 @@
   width: 60%; 
   min-height: 40px; 
   max-width: 60%;
+}
+
+.chat-window .no-convo{
+  flex: 1;
+  height:100%;
+  padding: 20px 100px;
+  font-family:"Century Gothic", "HelveticaNeueLT Pro 45 Lt", sans-serif;
+  font-size: 30px;
+  font-weight: bolder;
+  color: #DDD; 
+  text-shadow: 0px 1px 0px rgba(255,255,255,.3), 0px -1px 0px rgba(0,0,0,.3);
+  text-align: center;
 }
 
 

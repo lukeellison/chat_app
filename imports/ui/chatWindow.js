@@ -12,6 +12,9 @@ import { rangeInEdit } from './helpers.js'
 
 
 Template.chatWindow.helpers({
+  activeConvo(){
+    return Session.get('activeConvo') != undefined
+  },
   messages() { //retrieves active conversations messages in the databases from client (insecure)
 
     const convo = Session.get('activeConvo'); //Get the active conversation from the session variable
