@@ -19,7 +19,6 @@ Template.body.events({
   	if(!result) alert("No more unmatched users");
     //Resubscribe to gain info about this user (did not want people to be able to pass arguments to this subscription so it is not reactive)
   	Meteor.subscribe('matchedUsers');
-	Meteor.subscribe('messages'); //this needs arguments
   });
 
 },

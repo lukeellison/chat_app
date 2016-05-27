@@ -28,27 +28,6 @@ if (Meteor.isServer) {
 } 
 
 Meteor.methods({
-  'conversations.new'(userId, username) { //Method is being used temporarily
-  	check(userId, String);
-  	//check(username, String);
-
-    //Make sure the user is logged in before sending
-    if (! Meteor.userId()) {
-      alert("Please sign in");
-      throw new Meteor.Error("not-authorized");
-    }
- 	
-    //Insert into database
-    Conversations.insert({
-      users: {
-      	ids: [Meteor.userId(), userId],
-      	usernames: [Meteor.user().username, username]
-      },
-      languages: "eng",
-      lastMessage: new Date(),
-      name: ""
-    });
-  },
   'conversations.matchmake'() { //Method called when pressing the matchmake button
     //Make sure the user is logged in before matchmaking
     if (! Meteor.userId()) {
@@ -79,12 +58,18 @@ Meteor.methods({
       },
       languages: "eng",
       lastMessage: new Date(),
-      name: ""
+      name: randUser.username
+    }, function(err, id){
+      //Add a field to the user collection to keep track of who the user is matched with
+      Meteor.users.update(Meteor.userId(),{$push:{
+        'matched.users':randUser._id,
+        'matched.convos':id
+      }})
+      Meteor.users.update(randUser._id,{$push:{
+        'matched.users':randUser._id,
+        'matched.convos':id
+      }})
     });
-
-    //Add a field to the user collection to keep track of who the user is matched with
-    Meteor.users.update(Meteor.userId(),{$push:{'matched.users':randUser._id}})
-    Meteor.users.update(randUser._id,{$push:{'matched.users':Meteor.userId()}})
 
     return true;
   },

@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 
-import './body.html'; //Load body html
+import './layout.html'; //Load main layout
+import './chat.html'; 
 import '../../client/main.css';
 import '../api/messages.js'; //Load Messages database collection and methods
 import '../api/users.js'
@@ -10,14 +11,21 @@ import '../api/edits.js';
 import './sidebar.js'
 import './chatWindow.js';
 
-Template.body.onCreated(function bodyOnCreated() {
-  Meteor.subscribe('convos');
-  Meteor.subscribe('messages');
-  Meteor.subscribe('edits');
-  Meteor.subscribe('matchedUsers');
+Template.layout.onCreated(function layoutOnCreated() {
+  this.autorun(() => {
+    var matchedConvos = []
+    if(Meteor.user()){
+      if(Meteor.user().matched)
+        matchedConvos = Meteor.user().matched.convos;
+    }
+    Meteor.subscribe('matchedUsers');
+    Meteor.subscribe('convos');
+    Meteor.subscribe('edits');
+    Meteor.subscribe('messages',matchedConvos);
+  });
 });
 
-Template.body.events({
+Template.layout.events({
 "click"(event) { //Allows clicking off selected message
   const target = event.target; 
   if($(target).is(".chat-messages")){

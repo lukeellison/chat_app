@@ -43,7 +43,6 @@ Template.chatWindow.events({
   const text = textarea.val(); //get the text from the text area
   const convo = Session.get('activeConvo'); //Get the active conversation to post it to
 
-  console.log(convo)
   // Insert message into the collection
   Meteor.call("messages.send", convo, text)
 
