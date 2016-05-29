@@ -39,6 +39,10 @@
   border: 0;
 }
 
+.outer-container {
+  padding-top:70px;
+}
+
 /*
  * Sidebar
  */

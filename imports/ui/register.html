@@ -1,0 +1,50 @@
+<template name="register">
+  <div class="container-fluid outer-container">
+    <h1 style='text-align:center'>Register</h1>
+    <form role="form" data-toggle="validator">
+      <hr>
+      <h4>Profile Information</h4>
+      <hr>
+      <div class="form-group has-feedback">
+        <label for="username">Username*</label>
+        <input type="text" class="form-control" id="username" placeholder="Username" required>
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group has-feedback">
+        <label for="email">Email Address*</label>
+        <input type="email" class="form-control" id="email" placeholder="Email" required>
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group has-feedback">
+        <label for="password">Password*</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" required>
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group has-feedback">
+        <label for="passwordConfirm">Confirm Password*</label>
+        <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm" data-match="#password" required>
+        <div class="help-block with-errors"></div>
+      </div>
+      <hr>
+      <h4>Languages</h4>
+      <hr>
+      <div id="Nlanguage" class="form-group has-feedback">
+        <label for="Nlanguage">Native Language*</label>
+        {{>languageSelect id="Nlanguage"}}
+        <div class="help-block with-errors"></div>
+      </div>
+      <div id="Flanguage" class="form-group">
+        <label for="Flanguage">Other Fluent Languages</label>
+        <br>
+        <button class="btn btn-default add">Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> 
+      </div>
+      <div id="Llanguage" class="form-group">
+        <label for="Llanguage">Non-Fluent Languages</label>
+        <br>
+        <button class="btn btn-default add">Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> 
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</template>

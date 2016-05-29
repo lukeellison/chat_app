@@ -23,3 +23,4 @@ standard-minifier-css
 standard-minifier-js
 iron:router
 danimal:userpresence
+anback:bootstrap-validator

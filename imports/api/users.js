@@ -1,5 +1,20 @@
 import { Conversations } from './conversations.js'
 
+/*additional fields:
+matched:{
+  users:[user ids that have been matched]
+  convos:[convo ids that have been matched]
+}
+presence:{
+  https://github.com/dan335/meteor-user-presence
+}
+languages:{ //all languages stored as language codes eg. "en"
+  native: native language
+  fluent: [fluent languages]
+  learning: [languages to learn]
+}
+*/
+
 Meteor.users.deny({update: function () { return true; }});
 
 if (Meteor.isServer) {

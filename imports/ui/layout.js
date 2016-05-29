@@ -10,6 +10,7 @@ import '../api/edits.js';
 
 import './sidebar.js'
 import './chatWindow.js';
+import './register.js';
 
 Template.layout.onCreated(function layoutOnCreated() {
   this.autorun(() => {
