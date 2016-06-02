@@ -8,9 +8,16 @@ Router.route('/',function(){
 	this.render('landing')
 });
 
-Router.route('/chat',function(){
-	this.render('chat')
-});
+Router.route('/dashboard',
+	function(){
+		this.render('chat')
+    },
+    {
+		onBeforeAction: function () {
+			AccountsEntry.signInRequired(this);
+		}    	
+    }
+);
 
 Router.route('/register',function(){
 	this.render('register')

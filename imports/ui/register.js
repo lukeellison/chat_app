@@ -1,8 +1,15 @@
+// import 'meteor/anback:bootstrap-validator'
 import './register.html'
 import './languageSelect.html'
 
-Template.register.onCreated(function(){
-	$("form").validator()
+Template.register.onRendered(function(){
+    $('form').validator().on('submit', function (event) {
+        if (event.isDefaultPrevented()) {
+            console.log("form not valid")
+        } else {
+            console.log("okay")
+        }
+    })
 })
 
 Template.register.helpers({
