@@ -14,13 +14,11 @@ Router.route('/home',function(){
 
 Router.route('/dashboard',
 	function(){
-		this.render('chat')
+		if(Meteor.user)
+			this.render('chat')
+		else
+			router.go('/sign-in')
     },
-    {
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}    	
-    }
 );
 
 Router.route('/register',function(){
