@@ -35,12 +35,21 @@
  * Top navigation
  * Hide default border to remove 1px line.
  */
+
 .navbar-fixed-top {
   border: 0;
 }
 
 .yield-block {
   padding-top:70px;
+}
+
+a.navbar-brand {
+  padding: 2px;
+}
+
+img.nav-brand {
+  height: 100%;
 }
 
 /*

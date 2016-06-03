@@ -8,6 +8,10 @@ Router.route('/',function(){
 	this.render('landing')
 });
 
+Router.route('/home',function(){
+	this.render('landing')
+});
+
 Router.route('/dashboard',
 	function(){
 		this.render('chat')
