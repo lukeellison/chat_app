@@ -29,7 +29,7 @@ if (Meteor.isServer) {
     const convos = user.matched.convos
 
     //Get messages that belong to the matched conversations
-    return Messages.find({ "conversationId" : { $in : convos }});
+    return Messages.find({ "conversationId" : { $in : convos }},{sort:{sentAt:-1}, limit:100});
   });
 } 
 
