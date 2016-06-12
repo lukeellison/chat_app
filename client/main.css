@@ -41,7 +41,7 @@
 }
 
 .yield-block {
-  padding-top:70px;
+  padding-top:60px;
 }
 
 a.navbar-brand {
@@ -148,8 +148,11 @@ img.nav-brand {
 .chat-window{
   display:flex;
   flex-direction:column;
-  height:100vh;
-  padding-top: 70px;
+  /*adjust for header */
+  height: calc(100vh - 60px);
+  height: -o-calc(100vh - 60px); /* opera */
+  height: -webkit-calc(100vh - 60px); /* google, safari */
+  height: -moz-calc(100vh - 60px); /* firefox */
 }
 
 .chat-messages{

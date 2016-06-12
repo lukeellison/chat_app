@@ -4,9 +4,14 @@ import { Accounts } from 'meteor/accounts-base';
 //   passwordSignupFields: 'USERNAME_ONLY',
 // });
 
+
 Meteor.users.deny({update: function () { return true; }});
 
 Meteor.startup(function () {
+	Accounts.config({
+		sendVerificationEmail: false
+	});
+
 	if(Meteor.isClient){
 		AccountsEntry.config({
 			privacyUrl: '/privacy-policy',     // if set adds link to privacy policy and 'you agree to ...' on sign-up page
