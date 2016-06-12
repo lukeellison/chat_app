@@ -58,7 +58,7 @@ Meteor.methods({
       },
       languages: "eng",
       createdAt: new Date(),
-      name: randUser.username
+      name: ""
     }, function(err, id){
       //Add a field to the user collection to keep track of who the user is matched with
       Meteor.users.update(Meteor.userId(),{$push:{
