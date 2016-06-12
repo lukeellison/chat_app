@@ -53,7 +53,6 @@ Meteor.methods({
     read: false
   });
 },
-},
 'messages.read'(conversation){
   //Make sure the user is logged in before marking read
 
