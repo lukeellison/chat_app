@@ -10,7 +10,7 @@ users: {
 	usernames: [corresponding strings]
 }
 languages: [agreed conversation languages]
-lastMessage: Date object of most recent messsage
+createdAt: Date object
 name: name of conversation
 */
 
@@ -57,7 +57,7 @@ Meteor.methods({
         usernames: [Meteor.user().username, randUser.username]
       },
       languages: "eng",
-      lastMessage: new Date(),
+      createdAt: new Date(),
       name: randUser.username
     }, function(err, id){
       //Add a field to the user collection to keep track of who the user is matched with

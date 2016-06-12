@@ -53,14 +53,6 @@ Meteor.methods({
     read: false
   });
 },
-'messages.correct'(message,text) {
-  //Make sure the user is logged in before updating
-  if (! Meteor.userId()) {
-    alert("Please sign in to edit a message");
-    throw new Meteor.Error("not-authorized");
-  }
-
-  Messages.update(message,{ $set: {"text" : text} })
 },
 'messages.read'(conversation){
   //Make sure the user is logged in before marking read
