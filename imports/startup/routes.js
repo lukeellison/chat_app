@@ -27,6 +27,8 @@ Router.route('/dashboard',
     },
 );
 
+Router.route('/help')
+
 // Router.route('/register',function(){
 // 	this.render('register')
 // });
