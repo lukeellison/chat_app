@@ -12,7 +12,7 @@ Template.sidebar.helpers({
   }
 });
 
-Template.body.events({
+Template.sidebar.events({
 "click .btn-matchmake"(event) { //Event listener that calls the matchmake method when you press the matchmake button
 
   Meteor.call('conversations.matchmake',function(error,result){

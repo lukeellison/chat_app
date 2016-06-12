@@ -22,7 +22,7 @@ Template.editing.events({
 	const button = event.target.id;
 	console.log(button)
 
-	if(button === "translation"){ //handle translations differently, temporary solution
+	if(button === "translate"){ //handle translations differently, temporary solution
 	  const textarea = $('.chat-input textarea');
 	  translate(Session.get('selectedText'), "en", "ja",function(translatedText){ //hardcoded english to japanese at the moment
 	  	console.log(translatedText)

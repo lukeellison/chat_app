@@ -21,7 +21,7 @@ Template.layout.onCreated(function layoutOnCreated() {
     }
     Meteor.subscribe('matchedUsers');
     Meteor.subscribe('convos');
-    Meteor.subscribe('edits');
+    Meteor.subscribe('edits',matchedConvos);
     Meteor.subscribe('messages',matchedConvos);
   });
 });

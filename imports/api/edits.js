@@ -29,9 +29,10 @@ if (Meteor.isServer) {
     if (!this.userId) {
       return this.ready();
     }
-
     //Get list of convo ids for this user
-    const convos = Conversations.find({ "users.ids" : this.userId }, { '_id' : 1 }).map(function(item){ return item._id; })
+    //const convos = Conversations.find({ "users.ids" : this.userId }, { '_id' : 1 }).map(function(item){ return item._id; })
+    const user = Meteor.users.findOne(this.userId,{'matched.convos':1})
+    const convos = user.matched.convos
 
     //Get messages that belong to those conversations
     return Edits.find({ "conversationId" : { $in : convos }});

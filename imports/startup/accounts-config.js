@@ -12,6 +12,17 @@ Meteor.startup(function () {
 		sendVerificationEmail: false
 	});
 
+	if(Meteor.isServer){
+		//Add extra fields to users collections
+		Accounts.onCreateUser(function(options, user){
+			if (options.profile) user.profile = options.profile;
+			console.log(options)
+			user.matched = {users:[],convos:[]}
+			user.languages = {fluent:[],learning:[]}
+			return user;
+		})
+	}
+
 	if(Meteor.isClient){
 		AccountsEntry.config({
 			privacyUrl: '/privacy-policy',     // if set adds link to privacy policy and 'you agree to ...' on sign-up page
