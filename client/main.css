@@ -297,10 +297,10 @@ li time {
   background-color: rgba(244,180,0,.9);
   cursor: pointer;
 }
-.comment {
+.enquirey {
   background-color: rgba(15,157,88,.6);
 }
-.comment:hover {
+.enquirey:hover {
   background-color: rgba(15,157,88,.9);
   cursor: pointer;
 }

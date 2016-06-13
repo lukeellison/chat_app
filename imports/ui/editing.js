@@ -10,13 +10,6 @@ Template.editing.helpers({
 });
 
 Template.editing.events({
-"click .edit-buttons>#1"(event) { //temporarily translates text in the textarea and replaces it in the input
-  const textarea = $('.chat-input textarea');
-  translate(Session.get('selectedText'), "en", "ja",function(translatedText){ //hardcoded english to japanese at the moment
-  	console.log(translatedText)
-    textarea.append(translatedText);
-  });
-},
 "click .edit-buttons"(event) { //Correction button
 	//get appropriate variables
 	const button = event.target.id;
@@ -40,7 +33,7 @@ Template.editing.events({
 
 	//get the text in the input
 	const edit = $('.chat-input textarea').val()
-	if(edit === ""){//if no input require one
+	if(edit === "" && button != "enquirey"){//if no input require one except for enquirey
 		alert("please enter a " + button)
 		return
 	}
