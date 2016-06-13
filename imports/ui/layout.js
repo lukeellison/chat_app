@@ -37,6 +37,7 @@ Template.layout.events({
 });
 
 $(window).focus(function() { //Function for updating read status once window is in focus
-  Meteor.call('messages.read',Session.get('activeConvo'))
+  if(Meteor.userId() && Session.get('activeConvo'))
+    Meteor.call('messages.read',Session.get('activeConvo'))
 });
 
