@@ -58,6 +58,8 @@ Meteor.methods({
     senderId: Meteor.userId(),
     senderUsername: Meteor.user().username,
     read: false
+  },function(err,res){
+    if(err) console.log(err)
   });
 },
 'messages.read'(conversation){
