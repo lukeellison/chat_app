@@ -70,7 +70,7 @@ Meteor.methods({
     check(x, String);
     return x.length == 17;
   });
-  check(conversation, ObjectId); //Check if convo is objectId
+  check(conversation, Match.Maybe(ObjectId)); //Check if convo is objectId if not undefined
 
   Messages.update( //read messages in this conversation that were not sent by me
     {
