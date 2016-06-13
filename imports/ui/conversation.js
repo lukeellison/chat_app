@@ -5,11 +5,9 @@ import { Messages } from '../api/messages.js';
 Template.conversation.helpers({
 convoName() {
   if(this.name === ""){ //if name not set
-    const myUsername = Meteor.user().username
-    //set it to that of the username of the person I am not
-    this.users.usernames.forEach(function(username){
-      if(username != myUsername)return username
-    })
+    var usernames = this.users.usernames.slice() //make copy
+    usernames.splice(usernames.indexOf(Meteor.user().username),1) //remove yourself
+    return usernames[0] //should only be 1 other user atm
   }
   else return this.name
 },
@@ -26,11 +24,11 @@ num_unread(){
 },
 status(){
   //Find userIds in this conversation not including yourself
-  convoUsers = this.users.ids.slice() //make copy for splice
+  var convoUsers = this.users.ids.slice() //make copy for splice
   convoUsers.splice(convoUsers.indexOf(Meteor.userId()),1)
 
   //For now the collection for one of them (should only be one atm)
-  user = Meteor.users.findOne({
+  const user = Meteor.users.findOne({
     _id:{$in:convoUsers}
   })
 

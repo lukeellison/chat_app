@@ -16,9 +16,17 @@ Template.sidebar.events({
 "click .btn-matchmake"(event) { //Event listener that calls the matchmake method when you press the matchmake button
 
   Meteor.call('conversations.matchmake',function(error,result){
-  	if(!result) alert("No more unmatched users");
+    if(error){
+      alert("An error occured with matchmaking - logged")
+      console.log(error)
+    }
+  	else if(result === false){
+      alert("No more unmatched users");
+      return
+    }
+    Session.set('activeConvo',result)
     //Resubscribe to gain info about this user (did not want people to be able to pass arguments to this subscription so it is not reactive)
-  	Meteor.subscribe('matchedUsers');
+    Meteor.subscribe('matchedUsers');
   });
 
 },

@@ -51,7 +51,7 @@ Meteor.methods({
     const randUser = Meteor.users.findOne({ "_id": { $nin: matchedUsers }}, {skip: rand})
   
     //Insert into database
-    Conversations.insert({
+    return Conversations.insert({
       users: {
         ids: [Meteor.userId(), randUser._id],
         usernames: [Meteor.user().username, randUser.username]
@@ -71,6 +71,5 @@ Meteor.methods({
       }})
     });
 
-    return true;
   },
 });

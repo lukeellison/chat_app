@@ -18,8 +18,8 @@ Meteor.users.deny({update: function () { return true; }});
 
 if (Meteor.isServer) {
   // This code only runs on the server
-  // publish matched users info
 
+  // publish matched users info
   Meteor.publish('matchedUsers', function editsPublication() {
     if (!this.userId) {
       return this.ready();
@@ -53,4 +53,5 @@ if (Meteor.isServer) {
         }});
     }
   });
+
 } 

@@ -16,9 +16,20 @@ Meteor.startup(function () {
 		//Add extra fields to users collections
 		Accounts.onCreateUser(function(options, user){
 			if (options.profile) user.profile = options.profile;
-			console.log(options)
 			user.matched = {users:[],convos:[]}
 			user.languages = {fluent:[],learning:[]}
+			user.presence = {
+				status: 'offline',
+				updatedAt: undefined,
+				serverId: undefined,
+				clientAddress: undefined,
+				httpHeaders: {
+					'x-forwarded-for': undefined,
+					host: undefined,
+					'user-agent': undefined,
+					'accept-language': undefined
+				}
+			}
 			return user;
 		})
 	}
