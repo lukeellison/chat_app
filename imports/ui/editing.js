@@ -13,7 +13,6 @@ Template.editing.events({
 "click .edit-buttons"(event) { //Correction button
 	//get appropriate variables
 	const button = event.target.id;
-	console.log(button)
 
 	if(button === "translate"){ //handle translations differently, temporary solution
 	  const textarea = $('.chat-input textarea');
@@ -41,21 +40,23 @@ Template.editing.events({
 	if(selectedEdit){ //if there is an edit active then update that edit to the input
 		Meteor.call("edits.update", selectedEdit._id, button, edit, function(error,result){
 			if(error){
+		        alert('Error updating edit - logged')
 				console.log(error);
-				return;
 			}
 		});
 	}
 	else{ //if there is no edit active make a new one
 		Meteor.call("edits.new", button, activeMessage, Session.get('activeConvo'),selectedText, edit, location, function(error,editId){
 			if(error){
+		        alert('Error creating edit - logged')
 				console.log(error);
-				return;
+			}
+			else{
+				//return to message send screen
+				Session.set('selectedText',undefined);
+				Session.set('selectedTextRange',undefined);				
 			}
 		});
 	}
-	//return to message send screen
-	Session.set('selectedText',undefined);
-	Session.set('selectedTextRange',undefined);
 },
 });

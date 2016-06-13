@@ -43,11 +43,25 @@ Template.chatWindow.events({
   const text = textarea.val(); //get the text from the text area
   const convo = Session.get('activeConvo'); //Get the active conversation to post it to
 
-  // Insert message into the collection
-  Meteor.call("messages.send", convo, text)
+  if(text.length>200){ //This check is done at the server too
+    alert("Messages can not be more than 200 characters per message")
+    return
+  }
 
-  // Clear form
-  textarea.val("");
+  // Insert message into the collection
+  if(text != "" && convo){
+    Meteor.call("messages.send", convo, text, function(err,res){
+      if(err){
+        alert('Error sending message - logged')
+        console.log(err)
+      }
+      else{
+        // Clear form
+        textarea.val("");      
+      }
+    })
+  }
+
 },
 "keypress .chat-input textarea"(event) { //enter key sends message
   if(event.which == 13 && !event.shiftKey){ //unless shift+enter

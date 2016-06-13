@@ -10,16 +10,18 @@
     		<span class="no-convo">Please select conversation from left hand side or click 'Matchmake' for a new conversation</span>
     	{{/if}}
     	<div class="chat-input">
-		{{inputTitle}}	    	
-			<div class="input-group">
-				{{#if selectedText}}
-					{{> editing}}
-			    {{else}}
-				    <span class="input-group-addon btn btn-primary message-translate">Translate</span>
-				    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
-				    <span class="input-group-addon btn btn-primary message-send">Send</span>
-			   	{{/if}}
-			</div>
+			{{#if activeConvo}}
+				{{inputTitle}}	    	
+				<div class="input-group">
+					{{#if selectedText}}
+						{{> editing}}
+				    {{else}}
+					    <span class="input-group-addon btn btn-primary message-translate">Translate</span>
+					    <textarea class="form-control custom-control" rows="3" style="resize:none"></textarea>     
+					    <span class="input-group-addon btn btn-primary message-send">Send</span>
+				   	{{/if}}
+				</div>
+			{{/if}}
 		</div>
 	</div>
 </template>

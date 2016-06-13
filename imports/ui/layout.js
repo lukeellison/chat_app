@@ -10,9 +10,8 @@ import '../api/edits.js';
 
 import './sidebar.js'
 import './chatWindow.js';
-import './register.js';
 
-Template.layout.onCreated(function layoutOnCreated() {
+Template.layout.onCreated(function layoutOnCreated() { //Subscriptions with reactivity for when a new user is matched
   this.autorun(() => {
     var matchedConvos = []
     if(Meteor.user()){
@@ -37,7 +36,7 @@ Template.layout.events({
 },
 });
 
-$(window).focus(function() {
+$(window).focus(function() { //Function for updating read status once window is in focus
   Meteor.call('messages.read',Session.get('activeConvo'))
 });
 

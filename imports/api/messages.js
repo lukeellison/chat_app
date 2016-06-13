@@ -35,7 +35,14 @@ if (Meteor.isServer) {
 
 Meteor.methods({
 'messages.send'(convo, text) { //Method called when pressing the send button on a message
-	check(text, String); //Check if input is a string
+  text = text.substr(0,200) //cut long messages to protect database
+	ObjectId = Match.Where(function (x) { //define objectId
+    check(x, String);
+    return x.length == 17;
+  });
+
+  check(text, String); //Check if input is a string
+  check(convo, ObjectId); //Check if convo is objectId
 
   //Make sure the user is logged in before sending
   if (! Meteor.userId()) {
@@ -55,6 +62,15 @@ Meteor.methods({
 },
 'messages.read'(conversation){
   //Make sure the user is logged in before marking read
+  if (! Meteor.userId()) {
+    alert("Please sign in to send a message");
+    throw new Meteor.Error("not-authorized");
+  }
+  ObjectId = Match.Where(function (x) { //define objectId
+    check(x, String);
+    return x.length == 17;
+  });
+  check(conversation, ObjectId); //Check if convo is objectId
 
   Messages.update( //read messages in this conversation that were not sent by me
     {

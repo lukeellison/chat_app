@@ -46,11 +46,21 @@ Meteor.methods({
       alert("Please sign in to edit a message");
       throw new Meteor.Error("not-authorized");
     }
+    original = original.substr(0,200) //cut long messages to protect database
+    edit = edit.substr(0,200) //cut long messages to protect database
+    ObjectId = Match.Where(function (x) { //define objectId
+      check(x, String);
+      return x.length == 17;
+    });
+    //perform checks
+    check(type,String)
+    check(message,ObjectId)
+    check(convo,ObjectId)
+    check(original,String)
+    check(edit,String)
+    check(location,{start:Number,end:Number})
 
-    const id = new Meteor.Collection.ObjectID()._str;
-
-    Edits.insert({
-      _id: id,
+    return Edits.insert({
       type: type,
       messageId: message,
       conversationId: convo,
@@ -62,8 +72,6 @@ Meteor.methods({
       creatorUsername: Meteor.user().username,
       additions: []
     })
-
-    return id;
   },
   'edits.add'(id,addition){
     //Make sure the user is logged in before inserting
@@ -71,6 +79,13 @@ Meteor.methods({
       alert("Please sign in to edit a message");
       throw new Meteor.Error("not-authorized");
     };
+    ObjectId = Match.Where(function (x) { //define objectId
+      check(x, String);
+      return x.length == 17;
+    });
+    //perform checks
+    check(id,ObjectId)
+    check(addition,String)
 
     Edits.update({_id: id},{ $push: {additions: 
                                           {sender: Meteor.user().username, 

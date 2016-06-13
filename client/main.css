@@ -320,6 +320,10 @@ li time {
   position: relative;  
 }
 
+.edit-additions>p{
+  margin-bottom: 2px;
+}
+
 .additionForm>input{
   border: none;
   border-bottom: 1px solid #999;

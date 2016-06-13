@@ -92,9 +92,14 @@ Template.message.events({
 "click .edit-additions>.delete-edit"(event) {
 	const form = $('.message.active').find(".edit-additions");
 	form.slideUp(function(){
+		Meteor.call('edits.delete',Session.get('activeEdit'),Session.get('activeMessage'), function(error,result){
+			if(error){
+		        alert('Error deleting edit - logged')
+				console.log(error);
+			}
+		});
 	    Session.set('activeEdit',undefined);
 	});
-	Meteor.call('edits.delete',Session.get('activeEdit'),Session.get('activeMessage'))
     Session.set('selectedText',undefined);
     Session.set('selectedTextRange',undefined);        
 },
@@ -107,10 +112,16 @@ const target = event.target;
 const text = target.text.value;
 
 // Insert the addition into the collection
-Meteor.call('edits.add',Session.get('activeEdit'),text)
-
-// Clear form
-target.text.value = '';
+Meteor.call('edits.add',Session.get('activeEdit'),text, function(error,result){
+	if(error){
+        alert('Error adding to edit - logged')
+		console.log(error);
+	}
+	else{
+		// Clear form
+		target.text.value = '';		
+	}
+});
 },
 });
 
