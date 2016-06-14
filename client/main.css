@@ -191,10 +191,9 @@ img.nav-brand {
  */
 
 .chat-input>.input-group>.left-addon.edit {
+  max-height: 70px;
   padding: 0px;
-  height: 82px;
-  min-width: 50%;
-  max-width: 250px;
+  min-width: 500px;
 }
 
 .edit-buttons {
@@ -203,7 +202,7 @@ img.nav-brand {
   height: 100%;
   align-items: stretch;
   align-content: stretch;
-  width: 30%;
+  width: 100px;
   flex-wrap: wrap;
 }
 .edit-buttons>button{
