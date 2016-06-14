@@ -51,13 +51,15 @@ Meteor.methods({
   }
   
   //Insert into database
-  return Messages.insert({
+  Messages.insert({
     conversationId: convo,
     text: text,
     sentAt: new Date(),
     senderId: Meteor.userId(),
     senderUsername: Meteor.user().username,
     read: false
+  },function(err,res){
+    if(err) console.log(err)
   });
 },
 'messages.read'(conversation){
