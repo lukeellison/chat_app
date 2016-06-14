@@ -118,10 +118,10 @@ Meteor.call('edits.add',Session.get('activeEdit'),text, function(error,result){
 		console.log(error);
 	}
 	else{
-		// Clear form
-		target.text.value = '';		
 	}
 });
+// Clear form
+target.text.value = '';		
 },
 });
 
