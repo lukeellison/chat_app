@@ -56,10 +56,10 @@ Template.chatWindow.events({
         console.log(err)
       }
       else{
-        // Clear form
-        textarea.val("");      
       }
     })
+    // Clear form
+    textarea.val("");      
   }
 
 },
