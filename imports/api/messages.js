@@ -35,7 +35,6 @@ if (Meteor.isServer) {
 
 Meteor.methods({
 'messages.send'(convo, text) { //Method called when pressing the send button on a message
-  console.log(convo)
   text = text.substr(0,200) //cut long messages to protect database
 	ObjectId = Match.Where(function (x) { //define objectId
     check(x, String);

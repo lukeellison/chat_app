@@ -153,6 +153,7 @@ img.nav-brand {
   height: -o-calc(100vh - 60px); /* opera */
   height: -webkit-calc(100vh - 60px); /* google, safari */
   height: -moz-calc(100vh - 60px); /* firefox */
+  overflow: hidden;
 }
 
 .chat-messages{
@@ -164,7 +165,14 @@ img.nav-brand {
 
 .chat-input{
   border-top: 1px solid #999;
-  padding: 2px 5px 20px 5px;
+  width: 99%;
+  margin: 2px 5px 20px 5px;
+  overflow: hidden;
+}
+
+.input-group{
+  width: 100%;
+  height: 100%;
 }
 
 .chat-input-text { 
@@ -191,9 +199,9 @@ img.nav-brand {
  */
 
 .chat-input>.input-group>.left-addon.edit {
-  max-height: 70px;
   padding: 0px;
-  min-width: 500px;
+  width: 60%;
+  height: 100%
 }
 
 .edit-buttons {
@@ -202,7 +210,7 @@ img.nav-brand {
   height: 100%;
   align-items: stretch;
   align-content: stretch;
-  width: 100px;
+  width: 40%;
   flex-wrap: wrap;
 }
 .edit-buttons>button{
@@ -215,16 +223,11 @@ img.nav-brand {
 }
 
 .selected-text{
-  width: 70%;
+  width: 60%;
   padding: 5px;
-  min-height: 80px;
-  max-height: 1em;
   float: right;
   overflow: hidden;
   white-space:normal;
-
-  flex-grow:4;
-  flex-basis:100%;
 }
 
 /*
