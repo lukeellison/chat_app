@@ -2,7 +2,7 @@
 
 
 meteorDown.init(function (Meteor) {
-	Meteor.call('messages.send', 'PPHy9pHP9yhRkGv34', Meteor.userId() + ' - ' + new Date().toTimeString(), function (err, res) {
+	Meteor.call('messages.send', 'KrwYTDKpY5Kb73ZQx', Meteor.userId() + ' - ' + new Date().toTimeString(), function (err, res) {
 		if(err) console.log(err)
 		Meteor.kill();
 	});
@@ -11,9 +11,9 @@ meteorDown.init(function (Meteor) {
 
 meteorDown.run({
   concurrency: 10,
-  url: "http://localhost:3000",
+  url: "https://boiling-atoll-86431.herokuapp.com",
   key: 'SECRET_KEY',
-  auth: {userIds: ['gP3F2NzCMxj6DHAc0', 'gP3F2NzCMxj6DHAc1']}
+  auth: {userIds: ['gP3F2NzCMxj6DHAc0', 'gP3F2NzCMxj6DHAc1']}//, 'gP3F2NzCMxj6DHAc2', 'gP3F2NzCMxj6DHAc3', 'gP3F2NzCMxj6DHAc4']}
 });
 
 
